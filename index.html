@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopPro - Website Bán Hàng Online Chuyên Nghiệp</title>
+    <meta name="description" content="Website bán hàng online đa sản phẩm chuyên nghiệp, giao diện hiện đại, dễ sử dụng">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <h1>Shop<span class="gradient-text">Pro</span></h1>
+                </div>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="#home" class="nav-link active">Trang Chủ</a></li>
+                    <li><a href="#products" class="nav-link">Sản Phẩm</a></li>
+                    <li><a href="#categories" class="nav-link">Danh Mục</a></li>
+                    <li><a href="#about" class="nav-link">Giới Thiệu</a></li>
+                    <li><a href="#contact" class="nav-link">Liên Hệ</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="search-btn" id="search-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                    <button class="cart-btn" id="cart-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </button>
+                </div>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-background"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">Mua Sắm Thông Minh<br><span class="gradient-text">Giá Tốt Nhất</span></h2>
+                <p class="hero-description">Khám phá hàng nghìn sản phẩm chất lượng cao với giá cả cạnh tranh. Giao hàng nhanh chóng, uy tín trên toàn quốc.</p>
+                <div class="hero-buttons">
+                    <a href="#products" class="btn btn-primary">Mua Sắm Ngay</a>
+                    <a href="#about" class="btn btn-secondary">Tìm Hiểu Thêm</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <h3>10,000+</h3>
+                        <p>Sản phẩm</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>50,000+</h3>
+                        <p>Khách hàng</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>99%</h3>
+                        <p>Hài lòng</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories" id="categories">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Danh Mục Sản Phẩm</h2>
+                <p class="section-subtitle">Khám phá các danh mục sản phẩm phong phú</p>
+            </div>
+            <div class="category-grid">
+                <div class="category-card" data-category="electronics">
+                    <div class="category-icon">📱</div>
+                    <h3>Điện Tử</h3>
+                    <p>1,234 sản phẩm</p>
+                </div>
+                <div class="category-card" data-category="fashion">
+                    <div class="category-icon">👕</div>
+                    <h3>Thời Trang</h3>
+                    <p>2,456 sản phẩm</p>
+                </div>
+                <div class="category-card" data-category="home">
+                    <div class="category-icon">🏠</div>
+                    <h3>Gia Dụng</h3>
+                    <p>890 sản phẩm</p>
+                </div>
+                <div class="category-card" data-category="beauty">
+                    <div class="category-icon">💄</div>
+                    <h3>Làm Đẹp</h3>
+                    <p>1,567 sản phẩm</p>
+                </div>
+                <div class="category-card" data-category="sports">
+                    <div class="category-icon">⚽</div>
+                    <h3>Thể Thao</h3>
+                    <p>678 sản phẩm</p>
+                </div>
+                <div class="category-card" data-category="books">
+                    <div class="category-icon">📚</div>
+                    <h3>Sách</h3>
+                    <p>3,421 sản phẩm</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Sản Phẩm Nổi Bật</h2>
+                <p class="section-subtitle">Những sản phẩm được yêu thích nhất</p>
+            </div>
+            
+            <!-- Filter -->
+            <div class="product-filters">
+                <button class="filter-btn active" data-filter="all">Tất Cả</button>
+                <button class="filter-btn" data-filter="electronics">Điện Tử</button>
+                <button class="filter-btn" data-filter="fashion">Thời Trang</button>
+                <button class="filter-btn" data-filter="home">Gia Dụng</button>
+                <button class="filter-btn" data-filter="beauty">Làm Đẹp</button>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="product-grid" id="product-grid">
+                <!-- Products will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚚</div>
+                    <h3>Giao Hàng Nhanh</h3>
+                    <p>Giao hàng toàn quốc trong 24-48h</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Giá Tốt Nhất</h3>
+                    <p>Cam kết giá tốt nhất thị trường</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Thanh Toán An Toàn</h3>
+                    <p>Bảo mật thông tin tuyệt đối</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎁</div>
+                    <h3>Ưu Đãi Hấp Dẫn</h3>
+                    <p>Khuyến mãi và quà tặng hấp dẫn</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-overlay" id="cart-overlay"></div>
+        <div class="modal-content cart-modal-content">
+            <div class="modal-header">
+                <h2>Giỏ Hàng</h2>
+                <button class="modal-close" id="cart-close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="cart-items" id="cart-items">
+                <p class="empty-cart">Giỏ hàng trống</p>
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Tổng cộng:</span>
+                    <span class="total-price" id="total-price">0đ</span>
+                </div>
+                <button class="btn btn-primary btn-block">Thanh Toán</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div class="modal" id="product-modal">
+        <div class="modal-overlay" id="product-overlay"></div>
+        <div class="modal-content product-modal-content">
+            <button class="modal-close" id="product-close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="product-detail" id="product-detail">
+                <!-- Product details will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Shop<span class="gradient-text">Pro</span></h3>
+                    <p>Website bán hàng online chuyên nghiệp, uy tín, chất lượng cao.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Liên Kết</h4>
+                    <ul>
+                        <li><a href="#home">Trang Chủ</a></li>
+                        <li><a href="#products">Sản Phẩm</a></li>
+                        <li><a href="#about">Giới Thiệu</a></li>
+                        <li><a href="#contact">Liên Hệ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Hỗ Trợ</h4>
+                    <ul>
+                        <li><a href="#">Chính Sách</a></li>
+                        <li><a href="#">Điều Khoản</a></li>
+                        <li><a href="#">Bảo Mật</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Liên Hệ</h4>
+                    <ul>
+                        <li>📧 info@shoppro.vn</li>
+                        <li>📞 0123 456 789</li>
+                        <li>📍 Hà Nội, Việt Nam</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 ShopPro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script-new.js"></script>
+</body>
+</html>

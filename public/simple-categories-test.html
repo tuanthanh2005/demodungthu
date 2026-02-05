@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Admin Dashboard - ShopPro</title>
+    <meta name="description" content="Admin panel quản lý website bán hàng">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>Simple Categories Test</h1>
+    <button onclick="loadCategoriesNow()">Load Categories</button>
+    <div id="categories-result"></div>
+
+    <script>
+        function loadCategoriesNow() {
+            console.log('Loading categories now...');
+            fetch('/api/categories?simple=1')
+                .then(res => res.json())
+                .then(data => {
+                    console.log('Got categories:', data);
+                    const html = data.map(cat => `<p>${cat.id}: ${cat.name} - ${cat.description}</p>`).join('');
+                    document.getElementById('categories-result').innerHTML = html;
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                    document.getElementById('categories-result').innerHTML = '<p style="color:red">Error: ' + err.message + '</p>';
+                });
+        }
+    </script>
+</body>
+</html>
