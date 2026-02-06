@@ -1,0 +1,441 @@
+/* ============================================
+   MOBILE OPTIMIZATION CSS
+   Tối ưu giao diện cho thiết bị di động
+   ============================================ */
+
+/* === GENERAL MOBILE STYLES === */
+@media screen and (max-width: 768px) {
+
+    /* Body & Typography */
+    body {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    h1,
+    .display-1 {
+        font-size: 2rem !important;
+    }
+
+    h2,
+    .display-2 {
+        font-size: 1.75rem !important;
+    }
+
+    h3 {
+        font-size: 1.5rem !important;
+    }
+
+    h4 {
+        font-size: 1.25rem !important;
+    }
+
+    h5 {
+        font-size: 1.1rem !important;
+    }
+
+    h6 {
+        font-size: 1rem !important;
+    }
+
+    /* Container Padding */
+    .container,
+    .container-fluid,
+    .container-lg {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Section Padding */
+    .section-padding {
+        padding-top: 3rem !important;
+        padding-bottom: 3rem !important;
+    }
+
+    /* === HEADER OPTIMIZATION === */
+    header {
+        padding: 0.5rem 0 !important;
+    }
+
+    header .row {
+        row-gap: 1rem;
+    }
+
+    /* Logo */
+    header img[alt="logo"] {
+        max-width: 120px;
+        height: auto;
+    }
+
+    /* Search Bar Mobile */
+    .search-bar {
+        margin: 0.5rem 0;
+    }
+
+    .search-bar input {
+        font-size: 14px !important;
+        padding: 0.5rem !important;
+    }
+
+    /* Navigation */
+    .navbar-nav {
+        gap: 0.5rem !important;
+        font-size: 0.9rem !important;
+    }
+
+    .nav-link {
+        padding: 0.5rem !important;
+    }
+
+    /* Dropdown Menu */
+    .dropdown-menu {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+
+    .dropdown-item {
+        padding: 0.5rem 1rem;
+    }
+
+    /* === BANNER SECTION === */
+    section[style*="banner-1.jpg"] {
+        padding: 2rem 0 !important;
+        background-position: center !important;
+    }
+
+    section[style*="banner-1.jpg"] .col-lg-5 {
+        padding: 2rem 1rem !important;
+        margin: 2rem 0 !important;
+    }
+
+    section[style*="banner-1.jpg"] h2 {
+        font-size: 1.75rem !important;
+        line-height: 1.3 !important;
+    }
+
+    section[style*="banner-1.jpg"] p {
+        font-size: 0.95rem !important;
+    }
+
+    section[style*="banner-1.jpg"] .btn {
+        font-size: 0.85rem !important;
+        padding: 0.75rem 2rem !important;
+    }
+
+    /* Feature Cards */
+    .card {
+        margin-bottom: 1rem !important;
+    }
+
+    .card-body h5 {
+        font-size: 1.1rem !important;
+    }
+
+    .card-body p {
+        font-size: 0.9rem !important;
+    }
+
+    /* === CATEGORY SECTION === */
+    .category-carousel .swiper-slide {
+        padding: 0.5rem;
+    }
+
+    .category-carousel img {
+        border-radius: 12px;
+    }
+
+    .category-title {
+        font-size: 1rem !important;
+        margin-top: 0.75rem !important;
+    }
+
+    /* === PRODUCT GRID === */
+    .product-grid {
+        gap: 1rem;
+    }
+
+    .product-item {
+        padding: 0.75rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .product-item h3 {
+        font-size: 0.95rem !important;
+    }
+
+    .product-item figure {
+        margin-bottom: 0.75rem;
+    }
+
+    .product-item img {
+        border-radius: 8px;
+    }
+
+    /* Product Buttons */
+    .product-item .button-area {
+        position: static !important;
+        display: block !important;
+        box-shadow: none !important;
+        margin-top: 0.75rem;
+    }
+
+    .product-item .row.g-1 {
+        gap: 0.5rem !important;
+    }
+
+    .product-item .btn {
+        font-size: 0.75rem !important;
+        padding: 0.5rem !important;
+    }
+
+    .product-item input[type="number"] {
+        font-size: 0.85rem !important;
+        padding: 0.4rem !important;
+    }
+
+    /* === BANNER BLOCKS === */
+    .banner-blocks {
+        grid-gap: 1rem !important;
+    }
+
+    .banner-ad {
+        min-height: 200px;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .banner-ad .banner-content {
+        padding: 1.5rem !important;
+    }
+
+    .banner-ad h3 {
+        font-size: 1.25rem !important;
+    }
+
+    .banner-ad p {
+        font-size: 0.9rem !important;
+    }
+
+    /* === SWIPER CAROUSEL === */
+    .swiper-buttons {
+        display: none !important;
+    }
+
+    .products-carousel .swiper-slide {
+        padding: 0.5rem;
+    }
+
+    /* === SUBSCRIPTION SECTION === */
+    #subscription .bg-secondary {
+        padding: 2rem 1rem !important;
+    }
+
+    #subscription h2 {
+        font-size: 1.5rem !important;
+    }
+
+    #subscription form {
+        margin-top: 1.5rem;
+    }
+
+    #subscription input {
+        font-size: 0.9rem !important;
+        padding: 0.75rem !important;
+    }
+
+    #subscription .btn {
+        font-size: 0.9rem !important;
+        padding: 0.75rem !important;
+    }
+
+    /* === FOOTER === */
+    footer {
+        padding: 2rem 0 !important;
+    }
+
+    footer h5 {
+        font-size: 1.1rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    footer p,
+    footer a {
+        font-size: 0.9rem !important;
+    }
+
+    footer .row {
+        row-gap: 2rem;
+    }
+
+    #footer-bottom {
+        padding: 1.5rem 0 !important;
+    }
+
+    #footer-bottom p {
+        font-size: 0.85rem !important;
+        margin-bottom: 0.5rem;
+    }
+
+    /* === OFFCANVAS CART === */
+    .offcanvas {
+        max-width: 90% !important;
+    }
+
+    .offcanvas-body h4 {
+        font-size: 1.25rem !important;
+    }
+
+    .list-group-item h6 {
+        font-size: 0.95rem !important;
+    }
+
+    .list-group-item small {
+        font-size: 0.8rem !important;
+    }
+
+    /* === BUTTONS === */
+    .btn {
+        border-radius: 8px !important;
+        transition: all 0.3s ease;
+    }
+
+    .btn:active {
+        transform: scale(0.95);
+    }
+
+    /* === IMAGES === */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* === SPACING === */
+    .py-5 {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    .my-5 {
+        margin-top: 2rem !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .py-4 {
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+    }
+
+    .my-4 {
+        margin-top: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    /* === TOUCH OPTIMIZATION === */
+    a,
+    button,
+    .btn {
+        min-height: 44px;
+        min-width: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* === PERFORMANCE === */
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    img {
+        image-rendering: -webkit-optimize-contrast;
+    }
+}
+
+/* === EXTRA SMALL DEVICES (< 576px) === */
+@media screen and (max-width: 576px) {
+
+    body {
+        font-size: 13px;
+    }
+
+    h1,
+    .display-1 {
+        font-size: 1.75rem !important;
+    }
+
+    h2,
+    .display-2 {
+        font-size: 1.5rem !important;
+    }
+
+    .container,
+    .container-fluid,
+    .container-lg {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+
+    .section-padding {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    /* Header */
+    header img[alt="logo"] {
+        max-width: 100px;
+    }
+
+    /* Banner */
+    section[style*="banner-1.jpg"] h2 {
+        font-size: 1.5rem !important;
+    }
+
+    section[style*="banner-1.jpg"] .btn {
+        font-size: 0.8rem !important;
+        padding: 0.6rem 1.5rem !important;
+    }
+
+    /* Products */
+    .product-item h3 {
+        font-size: 0.9rem !important;
+    }
+
+    .product-item .btn {
+        font-size: 0.7rem !important;
+        padding: 0.4rem !important;
+    }
+}
+
+/* === LANDSCAPE MODE === */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+
+    .section-padding {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    section[style*="banner-1.jpg"] {
+        padding: 1.5rem 0 !important;
+    }
+
+    section[style*="banner-1.jpg"] .col-lg-5 {
+        padding: 1.5rem 1rem !important;
+        margin: 1rem 0 !important;
+    }
+}
+
+/* === SMOOTH SCROLLING === */
+html {
+    scroll-behavior: smooth;
+}
+
+/* === LOADING OPTIMIZATION === */
+@media screen and (max-width: 768px) {
+    .preloader-wrapper {
+        background: #fff;
+    }
+
+    .preloader {
+        margin: 40% auto 0;
+    }
+}

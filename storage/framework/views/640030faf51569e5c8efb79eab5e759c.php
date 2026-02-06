@@ -14,7 +14,7 @@
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/ecommerce.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/ecommerce.css')); ?>">
 </head>
 <body>
     
@@ -150,7 +150,7 @@
         <div class="container">
             <h2 class="section-title">Sản Phẩm Bán Chạy</h2>
             <div class="row g-4">
-                @php
+                <?php
                 $products = [
                     ['name' => 'Áo Thun Nam Basic Cotton', 'category' => 'Áo thun', 'price' => '245.000đ', 'oldPrice' => '350.000đ', 'badge' => '-30%', 'rating' => 4.5, 'img' => 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400'],
                     ['name' => 'Váy Maxi Hoa Nhí Vintage', 'category' => 'Váy', 'price' => '450.000đ', 'oldPrice' => '', 'badge' => 'new', 'rating' => 5.0, 'img' => 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400'],
@@ -159,39 +159,40 @@
                     ['name' => 'Áo Sơ Mi Nam Công Sở', 'category' => 'Áo sơ mi', 'price' => '320.000đ', 'oldPrice' => '', 'badge' => '', 'rating' => 4.2, 'img' => 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400'],
                     ['name' => 'Quần Jean Nữ Skinny', 'category' => 'Quần', 'price' => '380.000đ', 'oldPrice' => '', 'badge' => 'new', 'rating' => 5.0, 'img' => 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400'],
                 ];
-                @endphp
+                ?>
 
-                @foreach($products as $product)
+                <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="col-lg-3 col-md-4 col-6">
                     <div class="product-card">
                         <div class="product-image">
-                            <img src="{{ $product['img'] }}" alt="{{ $product['name'] }}">
-                            @if($product['badge'])
-                                <span class="product-badge {{ $product['badge'] == 'new' ? 'new' : '' }}">
-                                    {{ $product['badge'] == 'new' ? 'Mới' : $product['badge'] }}
+                            <img src="<?php echo e($product['img']); ?>" alt="<?php echo e($product['name']); ?>">
+                            <?php if($product['badge']): ?>
+                                <span class="product-badge <?php echo e($product['badge'] == 'new' ? 'new' : ''); ?>">
+                                    <?php echo e($product['badge'] == 'new' ? 'Mới' : $product['badge']); ?>
+
                                 </span>
-                            @endif
+                            <?php endif; ?>
                         </div>
                         <div class="product-info">
-                            <div class="product-category">{{ $product['category'] }}</div>
-                            <h3 class="product-name">{{ $product['name'] }}</h3>
+                            <div class="product-category"><?php echo e($product['category']); ?></div>
+                            <h3 class="product-name"><?php echo e($product['name']); ?></h3>
                             <div class="product-rating">
-                                @for($i = 1; $i <= 5; $i++)
-                                    @if($i <= floor($product['rating']))
+                                <?php for($i = 1; $i <= 5; $i++): ?>
+                                    <?php if($i <= floor($product['rating'])): ?>
                                         <i class="fas fa-star"></i>
-                                    @elseif($i - 0.5 <= $product['rating'])
+                                    <?php elseif($i - 0.5 <= $product['rating']): ?>
                                         <i class="fas fa-star-half-alt"></i>
-                                    @else
+                                    <?php else: ?>
                                         <i class="far fa-star"></i>
-                                    @endif
-                                @endfor
-                                <span class="text-muted ms-1">({{ $product['rating'] }})</span>
+                                    <?php endif; ?>
+                                <?php endfor; ?>
+                                <span class="text-muted ms-1">(<?php echo e($product['rating']); ?>)</span>
                             </div>
                             <div class="product-price">
-                                <span class="price-current">{{ $product['price'] }}</span>
-                                @if($product['oldPrice'])
-                                    <span class="price-old">{{ $product['oldPrice'] }}</span>
-                                @endif
+                                <span class="price-current"><?php echo e($product['price']); ?></span>
+                                <?php if($product['oldPrice']): ?>
+                                    <span class="price-old"><?php echo e($product['oldPrice']); ?></span>
+                                <?php endif; ?>
                             </div>
                             <div class="product-actions">
                                 <button class="btn-add-cart"><i class="fas fa-shopping-cart me-2"></i>Thêm vào giỏ</button>
@@ -200,7 +201,7 @@
                         </div>
                     </div>
                 </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
 
             <div class="text-center mt-5">
@@ -364,3 +365,4 @@
     </script>
 </body>
 </html>
+<?php /**PATH D:\dungthu.com\dungthu\demodungthu\resources\views/home.blade.php ENDPATH**/ ?>
