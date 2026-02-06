@@ -182,7 +182,59 @@
             .cart-chip {
                 padding: 0 12px;
             }
+
+            /* Cart modal: mobile bottom sheet */
+            .cart-modal {
+                left: 0 !important;
+                right: 0 !important;
+                top: auto !important;
+                bottom: 0 !important;
+                max-width: 100% !important;
+                height: 85vh !important;
+                border-radius: 16px 16px 0 0 !important;
+                transform: translateY(105%);
+                transition: transform 0.3s ease !important;
+            }
+
+            .cart-modal.active {
+                transform: translateY(0);
+            }
+
+            .cart-modal-header {
+                position: sticky;
+                top: 0;
+                background: #fff;
+                z-index: 2;
+                padding: 14px 16px;
+            }
+
+            .cart-modal-body {
+                padding: 12px 16px;
+                overscroll-behavior: contain;
+                padding-bottom: 110px;
+            }
+
+            .cart-modal-footer {
+                position: sticky;
+                bottom: 0;
+                background: #fff;
+                padding: 14px 16px;
+                z-index: 3;
+                box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.08);
+                border-top: 1px solid rgba(0, 0, 0, 0.06);
+            }
+
+            .cart-modal-footer .btn {
+                margin-top: 10px;
+            }
+
+            .cart-modal-footer .btn-primary {
+                display: inline-flex !important;
+                width: 100% !important;
+                justify-content: center;
+            }
         }
+        
     </style>
 </head>
 <body>
