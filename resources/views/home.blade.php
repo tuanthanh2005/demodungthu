@@ -19,34 +19,21 @@
 <body>
     
     <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <i class="fas fa-phone-alt me-2"></i>
-                    <a href="tel:0123456789">0123 456 789</a>
-                    <i class="fas fa-envelope ms-3 me-2"></i>
-                    <a href="mailto:info@shop.com">info@shop.com</a>
-                </div>
-                <div><a href="#"><i class="fas fa-truck me-1"></i> Miễn phí ship đơn từ 500k</a></div>
-            </div>
-        </div>
-    </div>
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="/"><i class="fas fa-shopping-bag me-2"></i>ShopName</a>
+            <a class="navbar-brand" href="/">Shop Bán Hàng</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="nav">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="/">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/shop">Sản phẩm</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/categories">Danh mục</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/about">Giới thiệu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/contact">Liên hệ</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/"><i class="fas fa-home me-2"></i>Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop"><i class="fas fa-store me-2"></i>Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/flashell"><i class="fas fa-bolt me-2"></i>Flashell</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about"><i class="fas fa-info-circle me-2"></i>Giới thiệu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact"><i class="fas fa-phone me-2"></i>Liên hệ</a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-3">
                     <a href="/wishlist" class="text-dark"><i class="far fa-heart fa-lg"></i></a>
