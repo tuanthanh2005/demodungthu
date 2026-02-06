@@ -31,7 +31,7 @@
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link active" href="/">Trang chủ</a></li>
                     <li class="nav-item"><a class="nav-link" href="/shop">Sản phẩm</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/flashell">Flashell</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/flashell">Giảm giá</a></li>
                     <li class="nav-item"><a class="nav-link" href="/about">Giới thiệu</a></li>
                     <li class="nav-item"><a class="nav-link" href="/contact">Liên hệ</a></li>
                 </ul>
