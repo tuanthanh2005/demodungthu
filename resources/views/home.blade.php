@@ -29,11 +29,11 @@
             </button>
             <div class="collapse navbar-collapse" id="nav">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="/"><i class="fas fa-home me-2"></i>Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/shop"><i class="fas fa-store me-2"></i>Sản phẩm</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/flashell"><i class="fas fa-bolt me-2"></i>Flashell</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/about"><i class="fas fa-info-circle me-2"></i>Giới thiệu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/contact"><i class="fas fa-phone me-2"></i>Liên hệ</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop">Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/flashell">Flashell</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">Giới thiệu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Liên hệ</a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-3">
                     <a href="/wishlist" class="text-dark"><i class="far fa-heart fa-lg"></i></a>
