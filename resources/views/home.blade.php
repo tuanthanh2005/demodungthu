@@ -23,7 +23,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="/">Shop Bán Hàng</a>
+            <a class="navbar-brand" href="/"><i class="fas fa-layer-group"></i> Shop Bán Hàng</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -229,15 +229,6 @@
                         <li><a href="/returns">Đổi trả hàng</a></li>
                         <li><a href="/payment">Thanh toán</a></li>
                         <li><a href="/faq">FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <h3 class="footer-title">Liên Hệ</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-map-marker-alt me-2"></i>123 Đường ABC, Quận 1, TP.HCM</li>
-                        <li><i class="fas fa-phone me-2"></i><a href="tel:0123456789">0123 456 789</a></li>
-                        <li><i class="fas fa-envelope me-2"></i><a href="mailto:info@shop.com">info@shop.com</a></li>
-                        <li><i class="fas fa-clock me-2"></i>8:00 - 22:00 (Hàng ngày)</li>
                     </ul>
                 </div>
             </div>

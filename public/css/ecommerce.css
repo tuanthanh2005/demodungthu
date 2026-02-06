@@ -1,45 +1,48 @@
 :root {
-    /* --- BRAND COLORS (Giữ nguyên tông tím của bạn) --- */
-    /* Màu chính: Tím Lavender hiện đại */
-    --primary: #034747;
+    /* --- PALETTE: ROYAL DIGITAL (Hiện đại & Cao cấp) --- */
 
-    /* Màu phụ: Tím đậm hơn một chút để làm Gradient hoặc Hover cho sâu màu */
-    --secondary: #117272;
+    /* Primary: Tím Indigo sâu, quyền lực (Dùng cho Header, Button chính) */
+    --primary: #4338ca;
+    /* Thay cho #3b2f5f */
 
-    /* Màu nhấn: Vàng hổ phách (Đậm hơn vàng chanh cũ để sang hơn, không bị chói) */
-    --accent: #014545;
+    /* Primary Dark: Dùng cho trạng thái Hover hoặc nền cực đậm */
+    --primary-dark: #312e81;
 
-    /* --- TEXT COLORS (Hệ màu Slate siêu nét) --- */
-    /* Màu đen ánh xanh: Sang trọng hơn đen tuyền, đọc lâu không mỏi mắt */
+    /* Secondary: Tím Lavender sáng, dùng cho Gradient */
+    --secondary: #818cf8;
+    /* Thay cho #8a7cf0 */
+
+    /* Accent: Vàng Amber rực rỡ (tạo điểm nhấn Luxury thay vì vàng đất) */
+    --accent: #f59e0b;
+
+    /* --- NEUTRAL COLORS (Hệ màu Slate siêu sạch) --- */
+    /* Dark: Màu chữ chính, không dùng đen tuyền (#000) mà dùng Xanh đen than */
     --dark: #0f172a;
 
-    /* Màu chữ chính: đậm vừa, dễ đọc trên nền sáng */
-    --text: #1f2937;
+    /* Text: Màu văn bản dễ đọc */
+    --text: #334155;
 
-    /* Màu chữ phụ: mô tả, metadata */
-    --text-muted: #6b7280;
+    /* Muted: Màu chữ phụ */
+    --text-muted: #64748b;
 
-    /* Màu chữ nhạt hơn: caption, hint */
-    --text-soft: #9ca3af;
+    /* --- BACKGROUNDS --- */
+    /* BG: Trắng sứ ánh xanh (Cool White) - Giúp web trông "tĩnh" và sang */
+    --bg: #f8fafc;
+    --bg-card: #ffffff;
 
-    /* Giữ lại để tương thích */
-    --light: #6b7280;
+    /* --- DECORATIONS --- */
+    --border: #e2e8f0;
 
-    /* --- UI COLORS (Phần quan trọng nhất để không bị "quê") --- */
-    /* Nền chính: Trắng ánh xanh cực nhẹ (Cool White) -> Sạch sẽ hơn tím nhạt */
-    --bg: #f7f8fd;
+    /* Shadow "Sịn": Đổ bóng 2 lớp tạo chiều sâu 3D mềm mại */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-neon: 0 0 15px rgba(67, 56, 202, 0.4);
+    /* Bóng phát sáng cho Hero */
 
-    /* Nền phụ: Tím cực nhạt (chỉ dùng cho các khối Features/Banner nhỏ) */
-    --bg-soft: #f1ecff;
-
-    /* Viền: Xám nhạt lạnh (Neutral) -> Đừng dùng viền tím, nhìn sẽ bị rối */
-    --border: #e5e7f3;
-
-    /* Trạng thái */
+    /* Status Colors */
     --success: #10b981;
-    /* Xanh ngọc lục bảo: Sang hơn xanh lá cây thường */
     --danger: #ef4444;
-    /* Đỏ san hô: Hiện đại hơn đỏ tươi */
 }
 
 * {
@@ -70,8 +73,13 @@ h6 {
 
 /* Navbar */
 .navbar {
-    background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.85);
+    /* Trong suốt */
+    backdrop-filter: blur(12px);
+    /* Hiệu ứng làm mờ nền phía sau */
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: var(--shadow-sm);
     padding: 1rem 0;
     position: sticky;
     top: 0;
@@ -106,24 +114,28 @@ h6 {
     font-family: 'Playfair Display', serif;
     font-size: 1.75rem;
     font-weight: 800;
-    color: #036868 !important;
+    color: var(--primary);
 }
 
 .nav-link {
     font-family: 'Playfair Display', sans-serif;
-    color: #036868 !important;
-    font-weight: 800;
+    color: var(--dark) !important;
+    font-weight: 600;
     padding: 0.5rem 1rem !important;
     transition: color 0.3s;
     position: relative;
 }
 
 .nav-link:hover {
-    color: #36cfcf !important;
+    color: var(--primary) !important;
 }
 
 .nav-link.active {
-    color: #1fcccc !important;
+    color: var(--primary) !important;
+}
+
+.nav-link i {
+    color: var(--primary);
 }
 
 
@@ -168,7 +180,7 @@ h6 {
 
 /* Hero */
 .hero {
-    background: linear-gradient(135deg, #033838 0%, #034848 100%);
+    background: linear-gradient(135deg, #5b4a8f 0%, var(--secondary) 100%);
     color: white;
     padding: 4rem 0;
     position: relative;
@@ -362,7 +374,7 @@ h6 {
 
 /* Section Title */
 .section-title {
-    color: #026666;
+    color: var(--dark);
     font-size: 2.5rem;
     text-align: center;
     margin-bottom: 3rem;
@@ -540,7 +552,7 @@ h6 {
 
 .btn-add-cart {
     flex: 1;
-    background: #008489;
+    background: var(--primary);
     color: white;
     border: none;
     padding: 0.65rem;
@@ -548,11 +560,13 @@ h6 {
     font-weight: 600;
     font-size: 0.85rem;
     transition: all 0.3s;
+    box-shadow: 0 10px 20px rgba(59, 47, 95, 0.25);
 }
 
 .btn-add-cart:hover {
     background: var(--secondary);
     transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(59, 47, 95, 0.35);
 }
 
 .btn-wishlist {
@@ -574,10 +588,10 @@ h6 {
 
 /* Buttons (Bootstrap override) */
 .btn-primary {
-    background: #008489;
+    background: var(--primary);
     border-color: var(--primary);
     color: white;
-    box-shadow: 0 10px 25px rgba(237, 233, 255, 0.25);
+    box-shadow: 0 12px 26px rgba(59, 47, 95, 0.28);
     transition: all 0.3s;
 }
 
@@ -587,12 +601,12 @@ h6 {
     border-color: var(--secondary);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 15px 35px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 18px 36px rgba(59, 47, 95, 0.35);
 }
 
 .btn-primary:active {
     transform: translateY(0);
-    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 20px rgba(59, 47, 95, 0.25);
 }
 
 /* Newsletter */
@@ -645,7 +659,7 @@ h6 {
 
 /* Footer */
 footer {
-    background: linear-gradient(135deg, #033f4a, #033f4a);
+    background: linear-gradient(135deg, #140a31, #140a31);
     color: white;
     padding: 3rem 0 1rem;
     position: relative;
@@ -1066,4 +1080,8 @@ footer {
 
 .price-current {
     font-size: 1rem;
+}
+
+.top-bar {
+    background: linear-gradient(135deg, #2b2146, #3b2f5f);
 }
