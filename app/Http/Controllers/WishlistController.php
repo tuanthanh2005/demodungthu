@@ -8,6 +8,7 @@ class WishlistController
 {
     public function index()
     {
-        return view('wishlist');
+        return view('wishlist.index');
     }
 }
+

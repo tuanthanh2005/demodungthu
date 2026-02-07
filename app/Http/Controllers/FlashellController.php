@@ -8,6 +8,7 @@ class FlashellController
 {
     public function index()
     {
-        return view('flashell');
+        return view('shop.flashell');
     }
 }
+

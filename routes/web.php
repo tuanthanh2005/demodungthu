@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -18,7 +18,7 @@ use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\FlashellController;
 use Illuminate\Support\Facades\Artisan;
 
-// Route trang chủ - hiển thị giao diện e-commerce
+// Route trang chá»§ - hiá»ƒn thá»‹ giao diá»‡n e-commerce
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/shop', [ProductController::class, 'index']);
 Route::get('/categories', [CategoryController::class, 'index']);
@@ -39,7 +39,7 @@ Route::get('/product/{id}', [ProductDetailController::class, 'show']);
 Route::get('/flashell', [FlashellController::class, 'index']);
 
 Route::get('/admin', function () {
-    return view('admin');
+    return view('admin.index');
 });
 
 Route::post('/admin/clear-cache', function () {
@@ -50,5 +50,6 @@ Route::post('/admin/clear-cache', function () {
     Artisan::call('config:clear');
     Artisan::call('route:clear');
 
-    return back()->with('status', 'Đã xóa cache thành công.');
+    return back()->with('status', 'ÄÃ£ xÃ³a cache thÃ nh cÃ´ng.');
 });
+

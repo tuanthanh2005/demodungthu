@@ -8,6 +8,7 @@ class ProductDetailController
 {
     public function show($id)
     {
-        return view('product-detail', ['id' => $id]);
+        return view('shop.product-detail', ['id' => $id]);
     }
 }
+

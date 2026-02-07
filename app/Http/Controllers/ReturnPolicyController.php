@@ -8,6 +8,7 @@ class ReturnPolicyController
 {
     public function index()
     {
-        return view('returns');
+        return view('pages.returns');
     }
 }
+

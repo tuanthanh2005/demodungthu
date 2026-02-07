@@ -8,6 +8,7 @@ class CategoryController
 {
     public function index()
     {
-        return view('categories');
+        return view('shop.categories');
     }
 }
+

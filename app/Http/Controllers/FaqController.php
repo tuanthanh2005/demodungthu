@@ -8,6 +8,7 @@ class FaqController
 {
     public function index()
     {
-        return view('faq');
+        return view('pages.faq');
     }
 }
+

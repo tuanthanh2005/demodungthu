@@ -8,6 +8,7 @@ class ProductController
 {
     public function index()
     {
-        return view('shop');
+        return view('shop.index');
     }
 }
+

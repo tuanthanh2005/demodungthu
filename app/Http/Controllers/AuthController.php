@@ -8,17 +8,17 @@ class AuthController
 {
     public function login()
     {
-        return view('login');
+        return view('auth.login');
     }
 
     public function register()
     {
-        return view('register');
+        return view('auth.register');
     }
 
     public function forgotPassword()
     {
-        return view('forgot-password');
+        return view('auth.forgot-password');
     }
 
     public function logout()
@@ -26,3 +26,6 @@ class AuthController
         return redirect('/');
     }
 }
+
+
+

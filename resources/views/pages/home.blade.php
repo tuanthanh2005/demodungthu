@@ -1,57 +1,9 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Mua sắm thời trang online với giá tốt nhất. Hàng ngàn sản phẩm quần áo, giày dép, phụ kiện chính hãng.">
-    <title>Cửa Hàng Thời Trang - Mua Sắm Online Giá Tốt</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-    
-    <!-- CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/ecommerce.css') }}?v={{ filemtime(public_path('css/ecommerce.css')) }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-</head>
-<body>
-    
-    <!-- Top Bar -->
+﻿@extends('layouts.app')
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="/"><i class="fas fa-layer-group"></i> Shop Bán Hàng</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="nav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="/">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/shop">Sản phẩm</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/flashell">Giảm giá</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/about">Giới thiệu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/contact">Liên hệ</a></li>
-                </ul>
-                <div class="d-flex align-items-center gap-3">
-                    <a href="/wishlist" class="text-dark"><i class="far fa-heart fa-lg"></i></a>
-                    <a href="/cart" class="text-dark cart-icon" aria-label="Giỏ hàng">
-                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                            <path d="M3 5h2l2.4 9.5a2 2 0 0 0 2 1.5h7.5a2 2 0 0 0 2-1.6l1.1-5.4H7.1" />
-                            <circle cx="10" cy="20" r="1.5" />
-                            <circle cx="17" cy="20" r="1.5" />
-                        </svg>
-                        <span class="cart-badge">3</span>
-                    </a>
-                    <a href="/account" class="text-dark"><i class="far fa-user fa-lg"></i></a>
-                </div>
-            </div>
-        </div>
-    </nav>
+@section('title', 'Cửa Hàng Thời Trang - Mua Sắm Online')
+@section('meta_description', 'Mua sắm thời trang online với giá tốt nhất.')
 
+@section('content')
     <!-- Hero -->
     <section class="hero">
         <div class="container">
@@ -126,7 +78,7 @@
                 </div>
                 <div class="col-md-4 col-6">
                     <div class="category-card">
-                        <img src="https://images.unsplash.com/photo-1514590353344-c6cfe1b49e0f?w=500" alt="Phụ kiện">
+                        <img src="https://images.unsplash.com/photo-1521334884684-d80222895322?w=500" alt="Phụ kiện">
                         <div class="category-overlay">
                             <h3 class="category-name">Phụ Kiện</h3>
                             <p>432 sản phẩm</p>
@@ -142,17 +94,6 @@
         <div class="container">
             <h2 class="section-title">Sản Phẩm Bán Chạy</h2>
             <div class="row g-4">
-                @php
-                $products = [
-                    ['name' => 'Áo Thun Nam Basic Cotton', 'category' => 'Áo thun', 'price' => '245.000đ', 'oldPrice' => '350.000đ', 'badge' => '-30%', 'rating' => 4.5, 'img' => 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400'],
-                    ['name' => 'Váy Maxi Hoa Nhí Vintage', 'category' => 'Váy', 'price' => '450.000đ', 'oldPrice' => '', 'badge' => 'new', 'rating' => 5.0, 'img' => 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400'],
-                    ['name' => 'Giày Thể Thao Nam Cao Cấp', 'category' => 'Giày', 'price' => '675.000đ', 'oldPrice' => '900.000đ', 'badge' => '-25%', 'rating' => 4.0, 'img' => 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400'],
-                    ['name' => 'Túi Xách Nữ Da Cao Cấp', 'category' => 'Túi xách', 'price' => '540.000đ', 'oldPrice' => '900.000đ', 'badge' => '-40%', 'rating' => 4.7, 'img' => 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400'],
-                    ['name' => 'Áo Sơ Mi Nam Công Sở', 'category' => 'Áo sơ mi', 'price' => '320.000đ', 'oldPrice' => '', 'badge' => '', 'rating' => 4.2, 'img' => 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400'],
-                    ['name' => 'Quần Jean Nữ Skinny', 'category' => 'Quần', 'price' => '380.000đ', 'oldPrice' => '', 'badge' => 'new', 'rating' => 5.0, 'img' => 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400'],
-                ];
-                @endphp
-
                 @foreach($products as $product)
                 <div class="col-lg-3 col-md-4 col-6">
                     <div class="product-card">
@@ -202,49 +143,9 @@
             </div>
         </div>
     </section>
+@endsection
 
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-6 col-md-6">
-                    <h3 class="footer-title"><i class="fas fa-shopping-bag me-2"></i>ShopName</h3>
-                    <p style="color: rgba(255,255,255,0.8);">Cửa hàng thời trang trực tuyến hàng đầu Việt Nam. Chúng tôi cam kết mang đến những sản phẩm chất lượng với giá tốt nhất.</p>
-                    <div class="social-links mt-3">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="footer-title">Về Chúng Tôi</h3>
-                    <ul class="footer-links">
-                        <li><a href="/about">Giới thiệu</a></li>
-                        <li><a href="/contact">Liên hệ</a></li>
-                        <li><a href="/careers">Tuyển dụng</a></li>
-                        <li><a href="/news">Tin tức</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="footer-title">Hỗ Trợ</h3>
-                    <ul class="footer-links">
-                        <li><a href="/shipping">Chính sách vận chuyển</a></li>
-                        <li><a href="/returns">Đổi trả hàng</a></li>
-                        <li><a href="/payment">Thanh toán</a></li>
-                        <li><a href="/faq">FAQ</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 ShopName. All rights reserved. | Designed with <i class="fas fa-heart text-danger"></i> in Vietnam</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+@push('scripts')
     <script>
         // Add to cart
         document.querySelectorAll('.btn-add-cart').forEach(btn => {
@@ -345,5 +246,4 @@
 
         document.querySelectorAll('.hero h1.marquee').forEach(initMarquee);
     </script>
-</body>
-</html>
+@endpush

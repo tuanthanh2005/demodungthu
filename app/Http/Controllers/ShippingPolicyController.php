@@ -8,6 +8,7 @@ class ShippingPolicyController
 {
     public function index()
     {
-        return view('shipping');
+        return view('pages.shipping');
     }
 }
+
