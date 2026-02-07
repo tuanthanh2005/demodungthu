@@ -14,7 +14,8 @@
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/ecommerce.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/ecommerce.css') }}?v={{ filemtime(public_path('css/ecommerce.css')) }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 </head>
 <body>
     
@@ -37,8 +38,12 @@
                 </ul>
                 <div class="d-flex align-items-center gap-3">
                     <a href="/wishlist" class="text-dark"><i class="far fa-heart fa-lg"></i></a>
-                    <a href="/cart" class="text-dark cart-icon">
-                        <i class="fas fa-shopping-cart fa-lg"></i>
+                    <a href="/cart" class="text-dark cart-icon" aria-label="Giỏ hàng">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M3 5h2l2.4 9.5a2 2 0 0 0 2 1.5h7.5a2 2 0 0 0 2-1.6l1.1-5.4H7.1" />
+                            <circle cx="10" cy="20" r="1.5" />
+                            <circle cx="17" cy="20" r="1.5" />
+                        </svg>
                         <span class="cart-badge">3</span>
                     </a>
                     <a href="/account" class="text-dark"><i class="far fa-user fa-lg"></i></a>
@@ -203,7 +208,7 @@
     <footer>
         <div class="container">
             <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-6 col-md-6">
                     <h3 class="footer-title"><i class="fas fa-shopping-bag me-2"></i>ShopName</h3>
                     <p style="color: rgba(255,255,255,0.8);">Cửa hàng thời trang trực tuyến hàng đầu Việt Nam. Chúng tôi cam kết mang đến những sản phẩm chất lượng với giá tốt nhất.</p>
                     <div class="social-links mt-3">
@@ -213,7 +218,7 @@
                         <a href="#"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-6">
+                <div class="col-lg-3 col-md-6">
                     <h3 class="footer-title">Về Chúng Tôi</h3>
                     <ul class="footer-links">
                         <li><a href="/about">Giới thiệu</a></li>
@@ -222,7 +227,7 @@
                         <li><a href="/news">Tin tức</a></li>
                     </ul>
                 </div>
-                <div class="col-lg-2 col-md-6">
+                <div class="col-lg-3 col-md-6">
                     <h3 class="footer-title">Hỗ Trợ</h3>
                     <ul class="footer-links">
                         <li><a href="/shipping">Chính sách vận chuyển</a></li>

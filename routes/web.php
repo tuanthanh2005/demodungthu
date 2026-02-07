@@ -16,6 +16,7 @@ use App\Http\Controllers\ReturnPolicyController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\FlashellController;
+use Illuminate\Support\Facades\Artisan;
 
 // Route trang chủ - hiển thị giao diện e-commerce
 Route::get('/', [HomeController::class, 'index']);
@@ -36,3 +37,18 @@ Route::get('/returns', [ReturnPolicyController::class, 'index']);
 Route::get('/faq', [FaqController::class, 'index']);
 Route::get('/product/{id}', [ProductDetailController::class, 'show']);
 Route::get('/flashell', [FlashellController::class, 'index']);
+
+Route::get('/admin', function () {
+    return view('admin');
+});
+
+Route::post('/admin/clear-cache', function () {
+    abort_unless(app()->environment('local'), 403);
+
+    Artisan::call('view:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+
+    return back()->with('status', 'Đã xóa cache thành công.');
+});
