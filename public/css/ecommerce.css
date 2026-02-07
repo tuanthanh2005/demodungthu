@@ -2117,14 +2117,126 @@ footer.site-footer::before {
 
 .navx-collapse.collapsing {
     display: flex;
-    height: auto !important;
+    height: 0 !important;
     overflow: hidden;
-    transition: none;
+    transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.navx-collapse.show {
+    animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .navx.navbar:has(.navx-collapse.show),
 .navx.navbar:has(.navx-collapse.collapsing) {
     height: auto;
+}
+
+/* Mobile Menu Items Animation */
+@media (max-width: 991.98px) {
+
+    .navx-collapse.show .navx-search,
+    .navx-collapse.show .navx-menu li,
+    .navx-collapse.show .navx-actions .navx-action {
+        animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+    }
+
+    .navx-collapse.show .navx-search {
+        animation-delay: 0.05s;
+    }
+
+    .navx-collapse.show .navx-menu li:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .navx-collapse.show .navx-menu li:nth-child(2) {
+        animation-delay: 0.15s;
+    }
+
+    .navx-collapse.show .navx-menu li:nth-child(3) {
+        animation-delay: 0.2s;
+    }
+
+    .navx-collapse.show .navx-menu li:nth-child(4) {
+        animation-delay: 0.25s;
+    }
+
+    .navx-collapse.show .navx-menu li:nth-child(5) {
+        animation-delay: 0.3s;
+    }
+
+    .navx-collapse.show .navx-actions .navx-action:nth-child(1) {
+        animation-delay: 0.35s;
+    }
+
+    .navx-collapse.show .navx-actions .navx-action:nth-child(2) {
+        animation-delay: 0.4s;
+    }
+
+    .navx-collapse.show .navx-actions .navx-action:nth-child(3) {
+        animation-delay: 0.45s;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hamburger Icon Animation */
+.navx-toggle {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navx-toggle:hover {
+    transform: scale(1.05);
+}
+
+.navx-toggle .navbar-toggler-icon {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navx-toggle[aria-expanded="true"] .navbar-toggler-icon {
+    transform: rotate(180deg);
+}
+
+/* Backdrop Overlay for Mobile Menu */
+@media (max-width: 991.98px) {
+    .navx.navbar::after {
+        content: '';
+        position: fixed;
+        top: var(--nav-height, 72px);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0);
+        pointer-events: none;
+        transition: background 0.3s ease;
+        z-index: -1;
+    }
+
+    .navx.navbar:has(.navx-collapse.show)::after {
+        background: rgba(0, 0, 0, 0.4);
+        pointer-events: auto;
+    }
 }
 
 main {
