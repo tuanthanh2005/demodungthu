@@ -1260,6 +1260,7 @@ footer {
     align-items: center;
     gap: 1rem;
     flex: 1;
+    width: 100%;
 }
 
 .navx-search {
@@ -1398,6 +1399,18 @@ footer {
     .navx-collapse.show {
         display: flex;
     }
+}
+
+.navx-collapse.collapsing {
+    display: flex;
+    height: auto !important;
+    overflow: hidden;
+    transition: none;
+}
+
+.navx.navbar:has(.navx-collapse.show),
+.navx.navbar:has(.navx-collapse.collapsing) {
+    height: auto;
 }
 main {
     background: var(--bg);
