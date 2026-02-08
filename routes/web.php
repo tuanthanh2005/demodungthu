@@ -55,9 +55,11 @@ Route::post('/admin/clear-cache', function () {
 
 // Admin Product Management Routes
 use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\AdminCategoryController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('products', AdminProductController::class);
+    Route::resource('categories', AdminCategoryController::class);
     Route::post('products/{product}/quantity', [AdminProductController::class, 'updateQuantity'])
         ->name('products.quantity');
 });

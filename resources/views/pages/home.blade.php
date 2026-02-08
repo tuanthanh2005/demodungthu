@@ -57,34 +57,24 @@
     <section class="categories">
         <div class="container">
             <h2 class="section-title">Danh Mục Sản Phẩm</h2>
-            <div class="row g-4">
+            <div class="row g-4 justify-content-center">
+                @foreach($categories as $category)
                 <div class="col-md-4 col-6">
-                    <div class="category-card">
-                        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500" alt="Thời trang nữ">
+                    <a href="{{ url('/shop?category=' . $category->id) }}" class="category-card d-block text-decoration-none">
+                        @if($category->icon)
+                            <img src="{{ $category->icon }}" alt="{{ $category->name }}" class="category-img">
+                        @else
+                            <div class="category-img-placeholder d-flex align-items-center justify-content-center bg-light" style="height: 300px;">
+                                <i class="fas fa-image fa-3x text-secondary"></i>
+                            </div>
+                        @endif
                         <div class="category-overlay">
-                            <h3 class="category-name">Thời Trang Nữ</h3>
-                            <p>1,234 sản phẩm</p>
+                            <h3 class="category-name text-white">{{ $category->name }}</h3>
+                            <p class="text-white-50 mb-0">{{ $category->products_count }} sản phẩm</p>
                         </div>
-                    </div>
+                    </a>
                 </div>
-                <div class="col-md-4 col-6">
-                    <div class="category-card">
-                        <img src="https://images.unsplash.com/photo-1516826957135-700dedea698c?w=500" alt="Thời trang nam">
-                        <div class="category-overlay">
-                            <h3 class="category-name">Thời Trang Nam</h3>
-                            <p>856 sản phẩm</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-6">
-                    <div class="category-card">
-                        <img src="https://images.unsplash.com/photo-1521334884684-d80222895322?w=500" alt="Phụ kiện">
-                        <div class="category-overlay">
-                            <h3 class="category-name">Phụ Kiện</h3>
-                            <p>432 sản phẩm</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

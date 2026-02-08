@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 
 class HomeController
 {
@@ -15,7 +16,10 @@ class HomeController
             ->limit(8)
             ->get();
 
-        return view('pages.home', compact('products'));
+        // Get categories
+        $categories = Category::withCount('products')->orderBy('products_count', 'desc')->limit(6)->get();
+
+        return view('pages.home', compact('products', 'categories'));
     }
 }
 

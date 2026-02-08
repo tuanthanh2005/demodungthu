@@ -38,7 +38,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="{{ request()->is('admin/categories*') ? 'active' : '' }}">
+                <a href="{{ route('admin.categories.index') }}" class="{{ request()->is('admin/categories*') ? 'active' : '' }}">
                     <i class="fas fa-tags"></i> Danh mục
                 </a>
             </li>

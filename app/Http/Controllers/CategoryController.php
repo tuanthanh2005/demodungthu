@@ -8,7 +8,8 @@ class CategoryController
 {
     public function index()
     {
-        return view('shop.categories');
+        $categories = \App\Models\Category::withCount('products')->get();
+        return view('shop.categories', compact('categories'));
     }
 }
 
