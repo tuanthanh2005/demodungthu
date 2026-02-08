@@ -128,15 +128,77 @@ class AdminProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'quantity' => 'required|integer|min:0',
-            'image' => 'nullable|string',
-            'sizes' => 'nullable|array',
-            'colors' => 'nullable|array',
+            'regular_price' => 'required|numeric|min:0',
+            'sale_price' => 'nullable|numeric|min:0',
+            'discount_percentage' => 'nullable|integer|min:0|max:100',
+            'image' => 'nullable|image|max:10240',
+            'thumbnails.*' => 'nullable|image|max:10240',
+            'size_prices' => 'nullable|array',
+            'size_prices.*.price' => 'nullable|numeric|min:0',
+            'size_prices.*.quantity' => 'nullable|integer|min:0',
+            'color_prices' => 'nullable|array',
+            'color_prices.*.hex' => 'nullable|string',
+            'color_prices.*.price' => 'nullable|numeric|min:0',
+            'color_prices.*.quantity' => 'nullable|integer|min:0',
+            'existing_images' => 'nullable|array',
         ]);
 
+        // Handle main image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('uploads/products', $imageName, 'public_uploads');
+            $validated['image'] = '/uploads/products/' . $imageName;
+        }
+
+        // Handle multiple thumbnail images
+        $images = $request->existing_images ?? [];
+        if ($request->hasFile('thumbnails')) {
+            foreach ($request->file('thumbnails') as $index => $thumbnail) {
+                $thumbnailName = time() . '_thumb_' . $index . '_' . $thumbnail->getClientOriginalName();
+                $thumbnail->storeAs('uploads/products', $thumbnailName, 'public_uploads');
+                $images[] = '/uploads/products/' . $thumbnailName;
+            }
+        }
+        $validated['images'] = $images;
+
         $validated['slug'] = Str::slug($validated['name']);
+        
+        // Calculate total quantity from variants
+        $totalQuantity = $request->quantity ?? 0; // Default or manual input
+        $variantQuantity = 0;
+        if (!empty($validated['size_prices'])) {
+            foreach ($validated['size_prices'] as $variant) {
+                $variantQuantity += $variant['quantity'] ?? 0;
+            }
+        }
+        if (!empty($validated['color_prices'])) {
+            foreach ($validated['color_prices'] as $variant) {
+                $variantQuantity += $variant['quantity'] ?? 0;
+            }
+        }
+        
+        // If versions exist, they override the main quantity
+        if ($variantQuantity > 0) {
+            $validated['quantity'] = $variantQuantity;
+        } else {
+            $validated['quantity'] = $request->quantity ?? 0;
+        }
+        
         $validated['in_stock'] = $validated['quantity'] > 0;
+        
+        // Extract sizes and colors
+        if (!empty($validated['size_prices'])) {
+            $validated['sizes'] = array_keys($validated['size_prices']);
+        } else {
+            $validated['sizes'] = [];
+        }
+        
+        if (!empty($validated['color_prices'])) {
+            $validated['colors'] = array_keys($validated['color_prices']);
+        } else {
+            $validated['colors'] = [];
+        }
 
         $product->update($validated);
 

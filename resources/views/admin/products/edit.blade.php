@@ -49,65 +49,61 @@
         width: 32px;
         height: 32px;
         border-radius: 6px;
-        border: 2px solid #e5e7eb;
+        border: 2px solid #fff;
+        box-shadow: 0 0 0 1px #e5e7eb;
     }
-    .price-badge {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        background: rgba(0,0,0,0.7);
-        color: white;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-    .color-item {
-        position: relative;
-        display: inline-block;
-        margin: 4px;
-    }
-    .color-item .color-preview {
-        width: 48px;
-        height: 48px;
-        border-radius: 8px;
-        border: 2px solid #e5e7eb;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    .color-item .color-preview:hover {
-        transform: scale(1.1);
-        border-color: #3b82f6;
-    }
-    .color-item .color-name {
-        position: absolute;
-        bottom: -20px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 11px;
-        color: #6b7280;
-        white-space: nowrap;
-    }
-    .color-item .btn-remove-color {
-        position: absolute;
-        top: -6px;
-        right: -6px;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: #ef4444;
-        color: white;
-        border: 2px solid white;
-        cursor: pointer;
+    .input-group {
         display: flex;
+        gap: 12px;
         align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        transition: all 0.2s;
+        margin-bottom: 12px;
     }
-    .color-item .btn-remove-color:hover {
-        background: #dc2626;
+    .input-group select,
+    .input-group input[type="text"] {
+        flex: 2;
+        padding: 10px 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+    
+    /* Color Palette */
+    .color-palette {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 8px;
+        padding: 12px;
+        background: #f9fafb;
+        border-radius: 8px;
+        margin-bottom: 12px;
+    }
+    .color-option {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        cursor: pointer;
+        border: 3px solid transparent;
+        transition: all 0.2s;
+        position: relative;
+    }
+    .color-option:hover {
         transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .color-option.selected {
+        border-color: #4285f4;
+        box-shadow: 0 0 0 2px #fff, 0 0 0 4px #4285f4;
+    }
+    .color-option.selected::after {
+        content: '✓';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        text-shadow: 0 0 3px rgba(0,0,0,0.5);
     }
     
     .image-upload-area {
@@ -120,8 +116,12 @@
         background: #f9fafb;
     }
     .image-upload-area:hover {
-        border-color: #3b82f6;
-        background: #eff6ff;
+        border-color: #4285f4;
+        background: #f0f7ff;
+    }
+    .image-upload-area.dragover {
+        border-color: #4285f4;
+        background: #e3f2fd;
     }
     .image-preview {
         max-width: 200px;
@@ -139,32 +139,63 @@
         position: relative;
         border-radius: 8px;
         overflow: hidden;
+        border: 2px solid #e5e7eb;
+        aspect-ratio: 1;
     }
     .thumbnail-item img {
         width: 100%;
-        height: 120px;
+        height: 100%;
         object-fit: cover;
     }
-    .thumbnail-item .btn-remove-thumb {
+    .thumbnail-item .remove-thumbnail {
         position: absolute;
         top: 8px;
         right: 8px;
         width: 28px;
         height: 28px;
-        border-radius: 50%;
-        background: rgba(239, 68, 68, 0.9);
+        background: #ef4444;
         color: white;
         border: none;
+        border-radius: 50%;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 14px;
         transition: all 0.2s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
-    .thumbnail-item .btn-remove-thumb:hover {
+    .thumbnail-item .remove-thumbnail:hover {
         background: #dc2626;
         transform: scale(1.1);
+    }
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid #e5e7eb;
+    }
+    .btn {
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        border: none;
+        font-size: 15px;
+    }
+    .btn-primary {
+        background: linear-gradient(135deg, #4285f4 0%, #357ae8 100%);
+        color: white;
+    }
+    .btn-secondary {
+        background: #f3f4f6;
+        color: #6b7280;
     }
 </style>
 @endpush
@@ -175,7 +206,6 @@
             @csrf
             @method('PUT')
             
-            <!-- PRODUCT NAME -->
             <div class="form-group">
                 <label class="form-label required">Tên sản phẩm</label>
                 <input type="text" 
@@ -189,14 +219,12 @@
                 @enderror
             </div>
 
-            <!-- CATEGORY -->
             <div class="form-group">
                 <label class="form-label required">Danh mục</label>
                 <select name="category_id" class="form-control" required>
                     <option value="">-- Chọn danh mục --</option>
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}" 
-                            {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                        <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
                         </option>
                     @endforeach
@@ -206,7 +234,6 @@
                 @enderror
             </div>
 
-            <!-- DESCRIPTION -->
             <div class="form-group">
                 <label class="form-label required">Mô tả</label>
                 <textarea name="description" 
@@ -218,14 +245,14 @@
                 @enderror
             </div>
 
-            <!-- PRICING SECTION -->
+            <!-- PRICE FIELDS -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="form-group">
                     <label class="form-label required">Giá tiêu chuẩn (VNĐ)</label>
                     <input type="text" 
                            id="regularPriceDisplay"
                            class="form-control price-input" 
-                           value="{{ old('regular_price', number_format($product->regular_price, 0, ',', ',')) }}"
+                           value="{{ old('regular_price', number_format($product->regular_price, 0, ',', '.')) }}"
                            placeholder="0"
                            oninput="formatCurrency(this, 'regularPrice')"
                            onblur="calculateDiscount()"
@@ -242,7 +269,7 @@
                     <input type="text" 
                            id="salePriceDisplay"
                            class="form-control price-input" 
-                           value="{{ old('sale_price', $product->sale_price ? number_format($product->sale_price, 0, ',', ',') : '') }}"
+                           value="{{ old('sale_price', $product->sale_price ? number_format($product->sale_price, 0, ',', '.') : '') }}"
                            placeholder="0"
                            oninput="formatCurrency(this, 'salePrice')"
                            onblur="calculateDiscount()">
@@ -255,16 +282,16 @@
             </div>
 
             <!-- DISCOUNT DISPLAY -->
-            <div class="form-group" id="discountDisplay" style="display: none;">
+            <div class="form-group" id="discountDisplay" style="{{ $product->discount_percentage > 0 ? 'display: block;' : 'display: none;' }}">
                 <div style="padding: 12px; background: #e6f4ea; border-radius: 8px; border-left: 4px solid #34a853;">
                     <strong style="color: #137333;">
-                        <i class="fas fa-tag"></i> Giảm giá: <span id="discountPercentage">0</span>%
+                        <i class="fas fa-tag"></i> Giảm giá: <span id="discountPercentage">{{ $product->discount_percentage ?? 0 }}</span>%
                     </strong>
                     <span style="color: #5f6368; margin-left: 12px;">
-                        Tiết kiệm: <span id="discountAmount">0</span> đ
+                        Tiết kiệm: <span id="discountAmount">{{ number_format(($product->regular_price - $product->sale_price), 0, ',', '.') }}</span> đ
                     </span>
                 </div>
-                <input type="hidden" name="discount_percentage" id="discountPercentageInput">
+                <input type="hidden" name="discount_percentage" id="discountPercentageInput" value="{{ $product->discount_percentage }}">
             </div>
 
             <!-- IMAGE UPLOAD -->
@@ -280,7 +307,7 @@
                            accept="image/*"
                            style="display: none;">
                 </div>
-                <img id="imagePreview" class="image-preview {{ $product->image ? 'show' : '' }}" src="{{ $product->image }}" alt="Preview">
+                <img id="imagePreview" src="{{ $product->image }}" class="image-preview {{ $product->image ? 'show' : '' }}" alt="Preview">
                 <div class="form-help">Chọn hình ảnh chính cho sản phẩm</div>
                 @error('image')
                     <div class="form-error">{{ $message }}</div>
@@ -293,7 +320,7 @@
                 <div class="image-upload-area" id="thumbnailUploadArea">
                     <i class="fas fa-images" style="font-size: 48px; color: #9ca3af; margin-bottom: 12px;"></i>
                     <p style="margin: 0; color: #6b7280;">Kéo thả nhiều ảnh vào đây hoặc click để chọn</p>
-                    <p style="margin: 8px 0 0 0; font-size: 12px; color: #9ca3af;">Có thể chọn nhiều ảnh cùng lúc (PNG, JPG, GIF tối đa 5MB/ảnh)</p>
+                    <p style="margin: 8px 0 0 0; font-size: 12px; color: #9ca3af;">Có thể chọn nhiều ảnh cùng lúc (Mọi định dạng, tối đa 10MB/ảnh)</p>
                     <input type="file" 
                            name="thumbnails[]" 
                            id="thumbnailInput" 
@@ -301,63 +328,175 @@
                            multiple
                            style="display: none;">
                 </div>
-                <div id="thumbnailPreview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 16px;"></div>
-                <div class="form-help">Chọn nhiều ảnh phụ để hiển thị trong gallery sản phẩm</div>
-            </div>
-
-            <!-- QUANTITY -->
-            <div class="form-group">
-                <label class="form-label required">Số lượng</label>
-                <input type="number" 
-                       name="quantity" 
-                       class="form-control" 
-                       value="{{ old('quantity', $product->quantity) }}"
-                       placeholder="0"
-                       min="0"
-                       required>
-                @error('quantity')
+                <div id="thumbnailPreviewGallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 16px;">
+                    @php
+                        $productImages = is_array($product->images) ? $product->images : json_decode($product->images ?? '[]', true);
+                    @endphp
+                    @if(!empty($productImages))
+                        @foreach($productImages as $index => $img)
+                            <div class="thumbnail-item">
+                                <img src="{{ $img }}" alt="Thumbnail">
+                                <button type="button" class="remove-thumbnail" onclick="removeExistingThumbnail(this)">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <input type="hidden" name="existing_images[]" value="{{ $img }}">
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+                <div class="form-help">Chọn nhiều ảnh để hiển thị trong gallery sản phẩm</div>
+                @error('thumbnails')
                     <div class="form-error">{{ $message }}</div>
                 @enderror
             </div>
 
             <!-- SIZE VARIANTS -->
             <div class="form-group">
-                <label class="form-label">Kích thước & Giá theo size</label>
+                <label class="form-label">Kích thước (Size) với giá riêng</label>
+                <div class="input-group">
+                    <select class="form-control" id="sizeSelect">
+                        <option value="">-- Chọn size --</option>
+                        <option value="XS">XS - Extra Small</option>
+                        <option value="S">S - Small</option>
+                        <option value="M">M - Medium</option>
+                        <option value="L">L - Large</option>
+                        <option value="XL">XL - Extra Large</option>
+                        <option value="XXL">XXL - Double XL</option>
+                        <option value="XXXL">XXXL - Triple XL</option>
+                        <option value="FREE">FREE SIZE - Freesize</option>
+                    </select>
+                    <button type="button" class="btn btn-primary" onclick="addSizeFromSelect()">
+                        <i class="fas fa-plus"></i> Thêm
+                    </button>
+                </div>
                 <div id="sizeVariants">
-                    @if(old('size_prices') || (isset($product->size_prices) && count($product->size_prices) > 0))
-                        @foreach(old('size_prices', $product->size_prices ?? []) as $index => $sizePrice)
-                            <div class="variant-item">
-                                <span class="variant-label">Size:</span>
-                                <input type="text" name="size_prices[{{ $index }}][size]" value="{{ $sizePrice['size'] ?? '' }}" placeholder="VD: S, M, L, XL" required>
-                                <span class="variant-label">Giá:</span>
-                                <input type="number" name="size_prices[{{ $index }}][price]" value="{{ $sizePrice['price'] ?? '' }}" placeholder="0" min="0" step="1000">
-                                <button type="button" class="btn-remove" onclick="this.parentElement.remove()">
-                                    <i class="fas fa-trash"></i>
+                    @php
+                        $sizePrices = is_array($product->size_prices) ? $product->size_prices : json_decode($product->size_prices ?? '[]', true);
+                    @endphp
+                    @if(!empty($sizePrices))
+                        @foreach($sizePrices as $size => $data)
+                            <div class="variant-item" data-size="{{ $size }}">
+                                <span class="variant-label">{{ $size }}</span>
+                                <input type="number" 
+                                       name="size_prices[{{ $size }}][price]" 
+                                       placeholder="Giá (VNĐ)" 
+                                       min="0" 
+                                       step="1000" 
+                                       value="{{ $data['price'] ?? '' }}">
+                                <input type="number" 
+                                       name="size_prices[{{ $size }}][quantity]" 
+                                       placeholder="Số lượng" 
+                                       min="0" 
+                                       value="{{ $data['quantity'] ?? '' }}">
+                                <button type="button" class="btn-remove" onclick="removeSizeVariant('{{ $size }}')">
+                                    <i class="fas fa-times"></i>
                                 </button>
                             </div>
                         @endforeach
                     @endif
                 </div>
-                <button type="button" class="btn btn-secondary" onclick="addSizeVariant()" style="margin-top: 8px;">
-                    <i class="fas fa-plus"></i> Thêm size
-                </button>
-                <div class="form-help">Thêm các kích thước khác nhau với giá riêng (tùy chọn)</div>
+                <div class="form-help">Chọn size và nhấn "Thêm". Mỗi size có thể có giá và số lượng riêng.</div>
             </div>
 
             <!-- COLOR VARIANTS -->
             <div class="form-group">
-                <label class="form-label">Màu sắc</label>
-                <div id="colorVariants" style="margin-bottom: 12px;">
-                    <!-- Existing colors will be loaded here -->
+                <label class="form-label">Màu sắc với giá riêng</label>
+                
+                <div id="colorVariants">
+                    @php
+                        $colorPrices = is_array($product->color_prices) ? $product->color_prices : json_decode($product->color_prices ?? '[]', true);
+                    @endphp
+                    @if(!empty($colorPrices))
+                        @foreach($colorPrices as $colorName => $data)
+                            <div class="variant-item" data-color="{{ $colorName }}">
+                                <span class="variant-preview" style="background: {{ $data['hex'] ?? '#000' }}"></span>
+                                <span class="variant-label">{{ $colorName }}</span>
+                                <input type="hidden" name="color_prices[{{ $colorName }}][hex]" value="{{ $data['hex'] ?? '#000' }}">
+                                <input type="number" 
+                                       name="color_prices[{{ $colorName }}][price]" 
+                                       placeholder="Giá (VNĐ)" 
+                                       min="0" 
+                                       step="1000" 
+                                       value="{{ $data['price'] ?? '' }}">
+                                <input type="number" 
+                                       name="color_prices[{{ $colorName }}][quantity]" 
+                                       placeholder="Số lượng" 
+                                       min="0" 
+                                       value="{{ $data['quantity'] ?? '' }}">
+                                <button type="button" class="btn-remove" onclick="removeColorVariant('{{ $colorName }}')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
-                <button type="button" class="btn btn-secondary" onclick="openColorModal()">
-                    <i class="fas fa-palette"></i> Thêm màu
-                </button>
-                <div class="form-help">Thêm các màu sắc khác nhau cho sản phẩm (tùy chọn)</div>
+
+                <!-- Color Palette -->
+                <div class="color-palette" id="colorPalette" style="margin-top: 16px;">
+                    <div class="color-option" data-color="#000000" data-name="Đen" style="background: #000000;" title="Đen"></div>
+                    <div class="color-option" data-color="#FFFFFF" data-name="Trắng" style="background: #FFFFFF; border: 1px solid #e5e7eb;" title="Trắng"></div>
+                    <div class="color-option" data-color="#FF0000" data-name="Đỏ" style="background: #FF0000;" title="Đỏ"></div>
+                    <div class="color-option" data-color="#00FF00" data-name="Xanh lá" style="background: #00FF00;" title="Xanh lá"></div>
+                    <div class="color-option" data-color="#0000FF" data-name="Xanh dương" style="background: #0000FF;" title="Xanh dương"></div>
+                    <div class="color-option" data-color="#FFFF00" data-name="Vàng" style="background: #FFFF00;" title="Vàng"></div>
+                    <div class="color-option" data-color="#FF00FF" data-name="Hồng" style="background: #FF00FF;" title="Hồng"></div>
+                    <div class="color-option" data-color="#00FFFF" data-name="Xanh ngọc" style="background: #00FFFF;" title="Xanh ngọc"></div>
+                    <div class="color-option" data-color="#FFA500" data-name="Cam" style="background: #FFA500;" title="Cam"></div>
+                    <div class="color-option" data-color="#800080" data-name="Tím" style="background: #800080;" title="Tím"></div>
+                    
+                    <div class="color-option" data-color="#808080" data-name="Xám" style="background: #808080;" title="Xám"></div>
+                    <div class="color-option" data-color="#C0C0C0" data-name="Bạc" style="background: #C0C0C0;" title="Bạc"></div>
+                    <div class="color-option" data-color="#8B4513" data-name="Nâu" style="background: #8B4513;" title="Nâu"></div>
+                    <div class="color-option" data-color="#FFD700" data-name="Vàng gold" style="background: #FFD700;" title="Vàng gold"></div>
+                    <div class="color-option" data-color="#4169E1" data-name="Xanh royal" style="background: #4169E1;" title="Xanh royal"></div>
+                    <div class="color-option" data-color="#32CD32" data-name="Xanh lime" style="background: #32CD32;" title="Xanh lime"></div>
+                    <div class="color-option" data-color="#FF1493" data-name="Hồng đậm" style="background: #FF1493;" title="Hồng đậm"></div>
+                    <div class="color-option" data-color="#00CED1" data-name="Xanh ngọc đậm" style="background: #00CED1;" title="Xanh ngọc đậm"></div>
+                    <div class="color-option" data-color="#FF6347" data-name="Đỏ cà chua" style="background: #FF6347;" title="Đỏ cà chua"></div>
+                    <div class="color-option" data-color="#9370DB" data-name="Tím nhạt" style="background: #9370DB;" title="Tím nhạt"></div>
+                    
+                    <div class="color-option" onclick="showCustomColorModal()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; font-weight: bold;" title="Màu khác">+</div>
+                </div>
+                
+                <div class="input-group">
+                    <input type="text" class="form-control" id="colorNameInput" placeholder="Tên màu..." readonly>
+                    <input type="hidden" id="selectedColorHex">
+                    <button type="button" class="btn btn-primary" onclick="addColorFromPalette()" id="addColorBtn" disabled>
+                        <i class="fas fa-plus"></i> Thêm
+                    </button>
+                </div>
+                <div class="form-help">Chọn màu bên trên và nhấn "Thêm".</div>
+            </div>
+                <div class="form-help">Click vào màu bên trên để chọn, sau đó nhấn "Thêm". Hoặc click nút "+" để thêm màu tùy chỉnh.</div>
             </div>
 
-            <!-- SUBMIT BUTTONS -->
-            <div class="form-actions" style="display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+            <!-- Custom Color Modal -->
+            <div id="customColorModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
+                <div style="background: white; padding: 30px; border-radius: 12px; max-width: 400px; width: 90%;">
+                    <h3 style="margin: 0 0 20px 0; color: #374151;">Thêm màu tùy chỉnh</h3>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Tên màu:</label>
+                        <input type="text" id="customColorName" class="form-control" placeholder="VD: Hồng pastel, Xanh navy...">
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Chọn màu:</label>
+                        <input type="color" id="customColorPicker" value="#FF69B4" style="width: 100%; height: 60px; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;">
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px;">
+                        <button type="button" class="btn btn-primary" onclick="addCustomColor()" style="flex: 1;">
+                            <i class="fas fa-check"></i> Xác nhận
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="closeCustomColorModal()" style="flex: 1;">
+                            <i class="fas fa-times"></i> Hủy
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-save"></i> Cập nhật sản phẩm
                 </button>
@@ -367,36 +506,25 @@
             </div>
         </form>
     </div>
-
-    <!-- COLOR PICKER MODAL -->
-    <div id="colorModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: white; border-radius: 16px; padding: 24px; max-width: 500px; width: 90%;">
-            <h3 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: #1f2937;">Thêm màu sắc</h3>
-            
-            <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Tên màu:</label>
-                <input type="text" id="customColorName" class="form-control" placeholder="VD: Hồng pastel, Xanh navy...">
-            </div>
-            
-            <div style="margin-bottom: 24px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Chọn màu:</label>
-                <input type="color" id="customColorPicker" style="width: 100%; height: 60px; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer;">
-            </div>
-            
-            <div style="display: flex; gap: 12px;">
-                <button type="button" class="btn btn-primary" onclick="addCustomColor()" style="flex: 1;">
-                    <i class="fas fa-check"></i> Thêm màu
-                </button>
-                <button type="button" class="btn btn-secondary" onclick="closeColorModal()">
-                    <i class="fas fa-times"></i> Hủy
-                </button>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @push('scripts')
 <script>
+    // Initialize variant objects from server data
+    const sizeVariants = @json($product->size_prices ?? (object)[]);
+    const colorVariants = @json($product->color_prices ?? (object)[]);
+
+    // Vietnamese Currency Formatting
+    function formatCurrency(input, hiddenInputId) {
+        let value = input.value.replace(/\D/g, '');
+        document.getElementById(hiddenInputId).value = value;
+        if (value) {
+            input.value = parseInt(value).toLocaleString('vi-VN');
+        } else {
+            input.value = '';
+        }
+    }
+
     // Discount calculation
     function calculateDiscount() {
         const regularPrice = parseFloat(document.getElementById('regularPrice').value) || 0;
@@ -410,7 +538,6 @@
             document.getElementById('discountPercentage').textContent = discountPercentage;
             document.getElementById('discountAmount').textContent = discountAmount.toLocaleString('vi-VN');
             document.getElementById('discountPercentageInput').value = discountPercentage;
-            
             discountDisplay.style.display = 'block';
         } else {
             discountDisplay.style.display = 'none';
@@ -418,20 +545,7 @@
         }
     }
 
-    // Currency formatting
-    function formatCurrency(input, hiddenFieldId) {
-        let value = input.value.replace(/[^0-9]/g, '');
-        
-        if (value) {
-            document.getElementById(hiddenFieldId).value = value;
-            input.value = parseInt(value).toLocaleString('vi-VN');
-        } else {
-            document.getElementById(hiddenFieldId).value = '';
-            input.value = '';
-        }
-    }
-
-    // Image upload handling
+    // Main Image upload handling
     const imageUploadArea = document.getElementById('imageUploadArea');
     const imageInput = document.getElementById('imageInput');
     const imagePreview = document.getElementById('imagePreview');
@@ -445,125 +559,220 @@
             reader.onload = function(e) {
                 imagePreview.src = e.target.result;
                 imagePreview.classList.add('show');
-            }
+            };
             reader.readAsDataURL(file);
         }
     });
 
-    // Thumbnail upload handling
+    // Drag and drop for main image
+    imageUploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        imageUploadArea.classList.add('dragover');
+    });
+    imageUploadArea.addEventListener('dragleave', () => {
+        imageUploadArea.classList.remove('dragover');
+    });
+    imageUploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        imageUploadArea.classList.remove('dragover');
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            imageInput.files = e.dataTransfer.files;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imagePreview.classList.add('show');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Thumbnail images handling
     const thumbnailUploadArea = document.getElementById('thumbnailUploadArea');
     const thumbnailInput = document.getElementById('thumbnailInput');
-    const thumbnailPreview = document.getElementById('thumbnailPreview');
+    const thumbnailPreviewGallery = document.getElementById('thumbnailPreviewGallery');
     let thumbnailFiles = [];
 
     thumbnailUploadArea.addEventListener('click', () => thumbnailInput.click());
 
     thumbnailInput.addEventListener('change', function(e) {
-        const files = Array.from(e.target.files);
-        files.forEach(file => {
-            if (file.size > 5 * 1024 * 1024) {
-                alert(`File ${file.name} quá lớn. Tối đa 5MB.`);
-                return;
-            }
-            
-            thumbnailFiles.push(file);
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const div = document.createElement('div');
-                div.className = 'thumbnail-item';
-                div.innerHTML = `
-                    <img src="${e.target.result}" alt="Thumbnail">
-                    <button type="button" class="btn-remove-thumb" onclick="removeThumbnail(this, '${file.name}')">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-                thumbnailPreview.appendChild(div);
-            }
-            reader.readAsDataURL(file);
-        });
+        handleThumbnailFiles(e.target.files);
     });
 
-    function removeThumbnail(btn, fileName) {
-        thumbnailFiles = thumbnailFiles.filter(f => f.name !== fileName);
+    // Drag and drop for thumbnails
+    thumbnailUploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        thumbnailUploadArea.classList.add('dragover');
+    });
+    thumbnailUploadArea.addEventListener('dragleave', () => {
+        thumbnailUploadArea.classList.remove('dragover');
+    });
+    thumbnailUploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        thumbnailUploadArea.classList.remove('dragover');
+        handleThumbnailFiles(e.dataTransfer.files);
+    });
+
+    function handleThumbnailFiles(files) {
+        Array.from(files).forEach(file => {
+            if (file.type.startsWith('image/')) {
+                thumbnailFiles.push(file);
+                displayThumbnail(file, thumbnailFiles.length - 1);
+            }
+        });
+        updateThumbnailInput();
+    }
+
+    function displayThumbnail(file, index) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const thumbnailItem = document.createElement('div');
+            thumbnailItem.className = 'thumbnail-item';
+            thumbnailItem.innerHTML = `
+                <img src="${e.target.result}" alt="Thumbnail">
+                <button type="button" class="remove-thumbnail" onclick="removeNewThumbnail(${index}, this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            thumbnailPreviewGallery.appendChild(thumbnailItem);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function removeNewThumbnail(index, btn) {
+        thumbnailFiles.splice(index, 1);
+        btn.closest('.thumbnail-item').remove();
+        updateThumbnailInput();
+    }
+
+    function removeExistingThumbnail(btn) {
         btn.closest('.thumbnail-item').remove();
     }
 
-    // Size variants
-    let sizeIndex = {{ count(old('size_prices', $product->size_prices ?? [])) }};
-    function addSizeVariant() {
-        const container = document.getElementById('sizeVariants');
-        const div = document.createElement('div');
-        div.className = 'variant-item';
-        div.innerHTML = `
-            <span class="variant-label">Size:</span>
-            <input type="text" name="size_prices[${sizeIndex}][size]" placeholder="VD: S, M, L, XL" required>
-            <span class="variant-label">Giá:</span>
-            <input type="number" name="size_prices[${sizeIndex}][price]" placeholder="0" min="0" step="1000">
-            <button type="button" class="btn-remove" onclick="this.parentElement.remove()">
-                <i class="fas fa-trash"></i>
+    function updateThumbnailInput() {
+        const dataTransfer = new DataTransfer();
+        thumbnailFiles.forEach(file => {
+            dataTransfer.items.add(file);
+        });
+        thumbnailInput.files = dataTransfer.files;
+    }
+
+    // Size variants management
+    const sizeSelect = document.getElementById('sizeSelect');
+    const sizeVariantsContainer = document.getElementById('sizeVariants');
+
+    function addSizeFromSelect() {
+        const size = sizeSelect.value;
+        if (!size) { alert('Vui lòng chọn size!'); return; }
+        if (sizeVariants[size]) { alert('Size này đã tồn tại!'); return; }
+        addSizeVariant(size);
+        sizeSelect.value = '';
+    }
+
+    function addSizeVariant(size) {
+        sizeVariants[size] = { price: '', quantity: '' };
+        const variantDiv = document.createElement('div');
+        variantDiv.className = 'variant-item';
+        variantDiv.dataset.size = size;
+        variantDiv.innerHTML = `
+            <span class="variant-label">${size}</span>
+            <input type="number" name="size_prices[${size}][price]" placeholder="Giá (VNĐ)" min="0" step="1000">
+            <input type="number" name="size_prices[${size}][quantity]" placeholder="Số lượng" min="0">
+            <button type="button" class="btn-remove" onclick="removeSizeVariant('${size}')">
+                <i class="fas fa-times"></i>
             </button>
         `;
-        container.appendChild(div);
-        sizeIndex++;
+        sizeVariantsContainer.appendChild(variantDiv);
     }
 
-    // Color variants
-    let colors = @json(old('colors', $product->colors ?? []));
-    
-    function renderColors() {
-        const container = document.getElementById('colorVariants');
-        container.innerHTML = '';
-        
-        colors.forEach((color, index) => {
-            const div = document.createElement('div');
-            div.className = 'color-item';
-            div.innerHTML = `
-                <div class="color-preview" style="background: ${color.code};"></div>
-                <div class="color-name">${color.name}</div>
-                <button type="button" class="btn-remove-color" onclick="removeColor(${index})">
-                    <i class="fas fa-times"></i>
-                </button>
-                <input type="hidden" name="colors[${index}][name]" value="${color.name}">
-                <input type="hidden" name="colors[${index}][code]" value="${color.code}">
-            `;
-            container.appendChild(div);
+    function removeSizeVariant(size) {
+        delete sizeVariants[size];
+        const variantDiv = sizeVariantsContainer.querySelector(`[data-size="${size}"]`);
+        if (variantDiv) variantDiv.remove();
+    }
+
+    // Color palette management
+    const colorOptions = document.querySelectorAll('.color-option');
+    const colorNameInput = document.getElementById('colorNameInput');
+    const selectedColorHex = document.getElementById('selectedColorHex');
+    const addColorBtn = document.getElementById('addColorBtn');
+    let currentSelectedColor = null;
+
+    colorOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            if (this.onclick) return; // Skip custom color button
+            colorOptions.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            const colorName = this.dataset.name;
+            const colorHex = this.dataset.color;
+            colorNameInput.value = colorName;
+            selectedColorHex.value = colorHex;
+            currentSelectedColor = { name: colorName, hex: colorHex };
+            addColorBtn.disabled = false;
         });
+    });
+
+    const colorVariantsContainer = document.getElementById('colorVariants');
+
+    function addColorFromPalette() {
+        if (!currentSelectedColor) { alert('Vui lòng chọn màu!'); return; }
+        const { name, hex } = currentSelectedColor;
+        if (colorVariants[name]) { alert('Màu này đã tồn tại!'); return; }
+        addColorVariant(name, hex);
+        colorOptions.forEach(opt => opt.classList.remove('selected'));
+        colorNameInput.value = '';
+        selectedColorHex.value = '';
+        currentSelectedColor = null;
+        addColorBtn.disabled = true;
     }
 
-    function openColorModal() {
-        document.getElementById('colorModal').style.display = 'flex';
+    function addColorVariant(colorName, colorHex) {
+        colorVariants[colorName] = { hex: colorHex, price: '', quantity: '' };
+        const variantDiv = document.createElement('div');
+        variantDiv.className = 'variant-item';
+        variantDiv.dataset.color = colorName;
+        variantDiv.innerHTML = `
+            <span class="variant-preview" style="background: ${colorHex}"></span>
+            <span class="variant-label">${colorName}</span>
+            <input type="hidden" name="color_prices[${colorName}][hex]" value="${colorHex}">
+            <input type="number" name="color_prices[${colorName}][price]" placeholder="Giá (VNĐ)" min="0" step="1000">
+            <input type="number" name="color_prices[${colorName}][quantity]" placeholder="Số lượng" min="0">
+            <button type="button" class="btn-remove" onclick="removeColorVariant('${colorName}')">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        colorVariantsContainer.appendChild(variantDiv);
+    }
+
+    function removeColorVariant(colorName) {
+        delete colorVariants[colorName];
+        const variantDiv = colorVariantsContainer.querySelector(`[data-color="${colorName}"]`);
+        if (variantDiv) variantDiv.remove();
+    }
+
+    // Custom Color Modal Functions
+    function showCustomColorModal() {
+        document.getElementById('customColorModal').style.display = 'flex';
         document.getElementById('customColorName').value = '';
-        document.getElementById('customColorPicker').value = '#000000';
+        document.getElementById('customColorPicker').value = '#FF69B4';
     }
 
-    function closeColorModal() {
-        document.getElementById('colorModal').style.display = 'none';
+    function closeCustomColorModal() {
+        document.getElementById('customColorModal').style.display = 'none';
     }
 
     function addCustomColor() {
-        const name = document.getElementById('customColorName').value.trim();
-        const code = document.getElementById('customColorPicker').value;
-        
-        if (!name) {
-            alert('Vui lòng nhập tên màu');
-            return;
-        }
-        
-        colors.push({ name, code });
-        renderColors();
-        closeColorModal();
+        const colorName = document.getElementById('customColorName').value.trim();
+        const colorHex = document.getElementById('customColorPicker').value;
+        if (!colorName) { alert('Vui lòng nhập tên màu!'); return; }
+        if (colorVariants[colorName]) { alert('Màu này đã tồn tại!'); return; }
+        addColorVariant(colorName, colorHex);
+        closeCustomColorModal();
     }
 
-    function removeColor(index) {
-        colors.splice(index, 1);
-        renderColors();
-    }
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
-        renderColors();
-        calculateDiscount();
+    // Close modal when clicking outside
+    document.getElementById('customColorModal').addEventListener('click', function(e) {
+        if (e.target === this) closeCustomColorModal();
     });
 </script>
 @endpush
