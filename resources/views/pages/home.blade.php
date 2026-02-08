@@ -96,73 +96,39 @@
             <div class="row g-4">
                 @foreach($products as $product)
                 <div class="col-lg-3 col-md-4 col-6">
-                    <div class="product-card {{ $product->quantity <= 0 ? 'out-of-stock' : '' }}">
+                    <div class="product-card">
                         <div class="product-image">
-                            <img src="{{ $product->image ?? 'https://via.placeholder.com/400' }}" alt="{{ $product->name }}">
-                            @if($product->quantity <= 0)
-                                <span class="product-badge out-of-stock-badge">Hết hàng</span>
-                            @elseif($product->created_at->diffInDays(now()) < 7)
-                                <span class="product-badge new">Mới</span>
-                            @endif
-                            @if($product->quantity <= 0)
-                                <div class="out-of-stock-overlay">
-                                    <i class="fas fa-ban"></i>
-                                    <p>Tạm hết hàng</p>
-                                </div>
+                            <img src="{{ $product['img'] }}" alt="{{ $product['name'] }}">
+                            @if($product['badge'])
+                                <span class="product-badge {{ $product['badge'] == 'new' ? 'new' : '' }}">
+                                    {{ $product['badge'] == 'new' ? 'Mới' : $product['badge'] }}
+                                </span>
                             @endif
                         </div>
                         <div class="product-info">
-                            <div class="product-category">{{ $product->category->name ?? 'N/A' }}</div>
-                            <h3 class="product-name">{{ $product->name }}</h3>
-                            
-                            @if($product->sizes && count($product->sizes) > 0)
-                                <div class="product-sizes">
-                                    <small class="text-muted">Size: </small>
-                                    @foreach($product->sizes as $size)
-                                        <span class="size-tag">{{ $size }}</span>
-                                    @endforeach
-                                </div>
-                            @endif
-                            
-                            @if($product->colors && count($product->colors) > 0)
-                                <div class="product-colors">
-                                    <small class="text-muted">Màu: </small>
-                                    @foreach($product->colors as $color)
-                                        <span class="color-dot-small" style="background: {{ $color }}" title="{{ $color }}"></span>
-                                    @endforeach
-                                </div>
-                            @endif
-                            
-                            <div class="product-price">
-                                <span class="price-current">{{ number_format($product->price, 0, ',', '.') }}đ</span>
+                            <div class="product-category">{{ $product['category'] }}</div>
+                            <h3 class="product-name">{{ $product['name'] }}</h3>
+                            <div class="product-rating">
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= floor($product['rating']))
+                                        <i class="fas fa-star"></i>
+                                    @elseif($i - 0.5 <= $product['rating'])
+                                        <i class="fas fa-star-half-alt"></i>
+                                    @else
+                                        <i class="far fa-star"></i>
+                                    @endif
+                                @endfor
+                                <span class="text-muted ms-1">({{ $product['rating'] }})</span>
                             </div>
-                            
-                            <div class="product-stock-info">
-                                @if($product->quantity > 0 && $product->quantity <= 5)
-                                    <small class="text-warning">
-                                        <i class="fas fa-exclamation-triangle"></i> Chỉ còn {{ $product->quantity }} sản phẩm
-                                    </small>
-                                @elseif($product->quantity > 0)
-                                    <small class="text-success">
-                                        <i class="fas fa-check-circle"></i> Còn hàng ({{ $product->quantity }})
-                                    </small>
-                                @else
-                                    <small class="text-danger">
-                                        <i class="fas fa-times-circle"></i> Hết hàng
-                                    </small>
+                            <div class="product-price">
+                                <span class="price-current">{{ $product['price'] }}</span>
+                                @if($product['oldPrice'])
+                                    <span class="price-old">{{ $product['oldPrice'] }}</span>
                                 @endif
                             </div>
-                            
                             <div class="product-actions">
-                                <button class="btn-add-cart" 
-                                        {{ $product->quantity <= 0 ? 'disabled' : '' }}
-                                        data-product-id="{{ $product->id }}">
-                                    <i class="fas fa-shopping-cart me-2"></i>
-                                    {{ $product->quantity <= 0 ? 'Hết hàng' : 'Thêm vào giỏ' }}
-                                </button>
-                                <button class="btn-wishlist" {{ $product->quantity <= 0 ? 'disabled' : '' }}>
-                                    <i class="far fa-heart"></i>
-                                </button>
+                                <button class="btn-add-cart"><i class="fas fa-shopping-cart me-2"></i>Thêm vào giỏ</button>
+                                <button class="btn-wishlist"><i class="far fa-heart"></i></button>
                             </div>
                         </div>
                     </div>
