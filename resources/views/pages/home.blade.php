@@ -146,7 +146,12 @@
                             @endif
                             
                             <div class="product-price">
-                                <span class="price-current">{{ number_format($product->price, 0, ',', '.') }}đ</span>
+                                @if($product->sale_price && $product->sale_price > 0 && $product->sale_price < $product->regular_price)
+                                    <span class="price-current">{{ number_format($product->sale_price, 0, ',', '.') }}đ</span>
+                                    <span class="price-old">{{ number_format($product->regular_price, 0, ',', '.') }}đ</span>
+                                @else
+                                    <span class="price-current">{{ number_format($product->regular_price, 0, ',', '.') }}đ</span>
+                                @endif
                             </div>
                             
                             <div class="product-stock-info">
