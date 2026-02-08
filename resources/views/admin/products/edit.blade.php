@@ -55,35 +55,73 @@
                 @enderror
             </div>
 
+            <!-- PRICING SECTION -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="form-group">
-                    <label class="form-label required">Giá (VNĐ)</label>
+                    <label class="form-label required">Giá tiêu chuẩn (VNĐ)</label>
                     <input type="number" 
-                           name="price" 
+                           id="regularPriceEdit"
+                           name="regular_price" 
                            class="form-control" 
-                           value="{{ old('price', $product->price) }}"
+                           value="{{ old('regular_price', $product->regular_price) }}"
                            placeholder="0"
                            min="0"
                            step="1000"
-                           required>
-                    @error('price')
+                           required
+                           onchange="calculateDiscountEdit()">
+                    <div class="form-help">Giá gốc trước khi giảm</div>
+                    @error('regular_price')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label required">Số lượng</label>
+                    <label class="form-label">Giá đã giảm (VNĐ)</label>
                     <input type="number" 
-                           name="quantity" 
+                           id="salePriceEdit"
+                           name="sale_price" 
                            class="form-control" 
-                           value="{{ old('quantity', $product->quantity) }}"
+                           value="{{ old('sale_price', $product->sale_price) }}"
                            placeholder="0"
                            min="0"
-                           required>
-                    @error('quantity')
+                           step="1000"
+                           onchange="calculateDiscountEdit()">
+                    <div class="form-help">Giá sau khi giảm (để trống nếu không giảm)</div>
+                    @error('sale_price')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
                 </div>
+            </div>
+
+            <!-- DISCOUNT DISPLAY -->
+            <div id="discountDisplayEdit" style="display: none; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; padding: 16px; margin-bottom: 24px; color: white;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-tag" style="font-size: 24px;"></i>
+                    <div style="flex: 1;">
+                        <div style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">
+                            🏷️ Giảm giá: <span id="discountPercentageEdit">0</span>%
+                        </div>
+                        <div style="font-size: 14px; opacity: 0.95;">
+                            Tiết kiệm: <span id="discountAmountEdit">0</span> đ
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="discount_percentage" id="discountPercentageInputEdit">
+
+            <!-- QUANTITY -->
+            <div class="form-group">
+                <label class="form-label required">Số lượng</label>
+                <input type="number" 
+                       name="quantity" 
+                       class="form-control" 
+                       value="{{ old('quantity', $product->quantity) }}"
+                       placeholder="0"
+                       min="0"
+                       required>
+                @error('quantity')
+                    <div class="form-error">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
@@ -229,5 +267,31 @@
         }
         event.target.closest('.input-tag').remove();
     }
+
+    // Discount calculation for Edit form
+    function calculateDiscountEdit() {
+        const regularPrice = parseFloat(document.getElementById('regularPriceEdit').value) || 0;
+        const salePrice = parseFloat(document.getElementById('salePriceEdit').value) || 0;
+        const discountDisplay = document.getElementById('discountDisplayEdit');
+        
+        if (salePrice > 0 && salePrice < regularPrice) {
+            const discountAmount = regularPrice - salePrice;
+            const discountPercentage = Math.round((discountAmount / regularPrice) * 100);
+            
+            document.getElementById('discountPercentageEdit').textContent = discountPercentage;
+            document.getElementById('discountAmountEdit').textContent = discountAmount.toLocaleString('vi-VN');
+            document.getElementById('discountPercentageInputEdit').value = discountPercentage;
+            
+            discountDisplay.style.display = 'block';
+        } else {
+            discountDisplay.style.display = 'none';
+            document.getElementById('discountPercentageInputEdit').value = '';
+        }
+    }
+
+    // Calculate discount on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        calculateDiscountEdit();
+    });
 </script>
 @endpush
