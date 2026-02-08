@@ -371,7 +371,16 @@
                 </div>
                 <div id="sizeVariants">
                     @php
+                        // Thử lấy từ size_prices, nếu không có thử lấy từ sizes (đề phòng bản cũ)
                         $sizePrices = is_array($product->size_prices) ? $product->size_prices : json_decode($product->size_prices ?? '[]', true);
+                        if (empty($sizePrices) && !empty($product->sizes)) {
+                            $oldSizes = is_array($product->sizes) ? $product->sizes : json_decode($product->sizes ?? '[]', true);
+                            foreach($oldSizes as $s) {
+                                // Nếu là mảng cũ chỉ có tên size, tự tạo cấu trúc mới
+                                if (is_string($s)) $sizePrices[$s] = ['price' => '', 'quantity' => ''];
+                                else if (is_array($s)) $sizePrices[$s['name'] ?? 'Size'] = $s;
+                            }
+                        }
                     @endphp
                     @if(!empty($sizePrices))
                         @foreach($sizePrices as $size => $data)
@@ -404,7 +413,16 @@
                 
                 <div id="colorVariants">
                     @php
+                        // Thử lấy từ color_prices, nếu không có thử lấy từ colors (đề phòng bản cũ)
                         $colorPrices = is_array($product->color_prices) ? $product->color_prices : json_decode($product->color_prices ?? '[]', true);
+                        if (empty($colorPrices) && !empty($product->colors)) {
+                            $oldColors = is_array($product->colors) ? $product->colors : json_decode($product->colors ?? '[]', true);
+                            foreach($oldColors as $c) {
+                                // Nếu là mảng cũ chỉ có tên màu, tự tạo cấu trúc mới
+                                if (is_string($c)) $colorPrices[$c] = ['hex' => '#000000', 'price' => '', 'quantity' => ''];
+                                else if (is_array($c)) $colorPrices[$c['name'] ?? 'Màu'] = $c;
+                            }
+                        }
                     @endphp
                     @if(!empty($colorPrices))
                         @foreach($colorPrices as $colorName => $data)
@@ -510,9 +528,29 @@
 
 @push('scripts')
 <script>
-    // Initialize variant objects from server data
-    const sizeVariants = @json($product->size_prices ?? (object)[]);
-    const colorVariants = @json($product->color_prices ?? (object)[]);
+    // Initialize variant objects from server data with fallback processing
+    @php
+        // Xử lý Size
+        $jsSizePrices = is_array($product->size_prices) ? $product->size_prices : json_decode($product->size_prices ?? '[]', true);
+        if (empty($jsSizePrices) && !empty($product->sizes)) {
+            $oldSizes = is_array($product->sizes) ? $product->sizes : json_decode($product->sizes ?? '[]', true);
+            foreach($oldSizes as $s) {
+                if ($s && is_string($s)) $jsSizePrices[$s] = ['price' => '', 'quantity' => ''];
+            }
+        }
+
+        // Xử lý Màu
+        $jsColorPrices = is_array($product->color_prices) ? $product->color_prices : json_decode($product->color_prices ?? '[]', true);
+        if (empty($jsColorPrices) && !empty($product->colors)) {
+            $oldColors = is_array($product->colors) ? $product->colors : json_decode($product->colors ?? '[]', true);
+            foreach($oldColors as $c) {
+                if ($c && is_string($c)) $jsColorPrices[$c] = ['hex' => '#000000', 'price' => '', 'quantity' => ''];
+            }
+        }
+    @endphp
+
+    const sizeVariants = @json(!empty($jsSizePrices) ? $jsSizePrices : (object)[]);
+    const colorVariants = @json(!empty($jsColorPrices) ? $jsColorPrices : (object)[]);
 
     // Vietnamese Currency Formatting
     function formatCurrency(input, hiddenInputId) {

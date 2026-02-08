@@ -68,6 +68,18 @@ class Product extends Model
     }
 
     /**
+     * Unified price accessor (sale_price when available, otherwise regular_price)
+     */
+    public function getPriceAttribute()
+    {
+        if (!is_null($this->sale_price) && (float)$this->sale_price > 0) {
+            return $this->sale_price;
+        }
+
+        return $this->regular_price;
+    }
+
+    /**
      * Scope for available products
      */
     public function scopeAvailable($query)

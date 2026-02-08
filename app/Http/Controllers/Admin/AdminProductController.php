@@ -81,13 +81,15 @@ class AdminProductController extends Controller
         
         // Calculate total quantity from variants
         $totalQuantity = 0;
-        if (!empty($validated['size_prices'])) {
-            foreach ($validated['size_prices'] as $variant) {
+        $sizePrices = $request->input('size_prices', []);
+        $colorPrices = $request->input('color_prices', []);
+        if (!empty($sizePrices)) {
+            foreach ($sizePrices as $variant) {
                 $totalQuantity += $variant['quantity'] ?? 0;
             }
         }
-        if (!empty($validated['color_prices'])) {
-            foreach ($validated['color_prices'] as $variant) {
+        if (!empty($colorPrices)) {
+            foreach ($colorPrices as $variant) {
                 $totalQuantity += $variant['quantity'] ?? 0;
             }
         }
@@ -96,13 +98,10 @@ class AdminProductController extends Controller
         $validated['in_stock'] = $totalQuantity > 0;
         
         // Extract sizes and colors from variant data
-        if (!empty($validated['size_prices'])) {
-            $validated['sizes'] = array_keys($validated['size_prices']);
-        }
-        if (!empty($validated['color_prices'])) {
-            // Store color names as array, hex values in color_prices
-            $validated['colors'] = array_keys($validated['color_prices']);
-        }
+        $validated['size_prices'] = $sizePrices;
+        $validated['color_prices'] = $colorPrices;
+        $validated['sizes'] = !empty($sizePrices) ? array_keys($sizePrices) : [];
+        $validated['colors'] = !empty($colorPrices) ? array_keys($colorPrices) : [];
 
         Product::create($validated);
 
@@ -165,15 +164,16 @@ class AdminProductController extends Controller
         $validated['slug'] = Str::slug($validated['name']);
         
         // Calculate total quantity from variants
-        $totalQuantity = $request->quantity ?? 0; // Default or manual input
+        $sizePrices = $request->input('size_prices', []);
+        $colorPrices = $request->input('color_prices', []);
         $variantQuantity = 0;
-        if (!empty($validated['size_prices'])) {
-            foreach ($validated['size_prices'] as $variant) {
+        if (!empty($sizePrices)) {
+            foreach ($sizePrices as $variant) {
                 $variantQuantity += $variant['quantity'] ?? 0;
             }
         }
-        if (!empty($validated['color_prices'])) {
-            foreach ($validated['color_prices'] as $variant) {
+        if (!empty($colorPrices)) {
+            foreach ($colorPrices as $variant) {
                 $variantQuantity += $variant['quantity'] ?? 0;
             }
         }
@@ -181,24 +181,20 @@ class AdminProductController extends Controller
         // If versions exist, they override the main quantity
         if ($variantQuantity > 0) {
             $validated['quantity'] = $variantQuantity;
+        } elseif ($request->has('quantity')) {
+            $validated['quantity'] = (int) $request->input('quantity', 0);
         } else {
-            $validated['quantity'] = $request->quantity ?? 0;
+            // Keep existing quantity if no variants and no manual quantity provided
+            $validated['quantity'] = $product->quantity;
         }
         
         $validated['in_stock'] = $validated['quantity'] > 0;
         
         // Extract sizes and colors
-        if (!empty($validated['size_prices'])) {
-            $validated['sizes'] = array_keys($validated['size_prices']);
-        } else {
-            $validated['sizes'] = [];
-        }
-        
-        if (!empty($validated['color_prices'])) {
-            $validated['colors'] = array_keys($validated['color_prices']);
-        } else {
-            $validated['colors'] = [];
-        }
+        $validated['size_prices'] = $sizePrices;
+        $validated['color_prices'] = $colorPrices;
+        $validated['sizes'] = !empty($sizePrices) ? array_keys($sizePrices) : [];
+        $validated['colors'] = !empty($colorPrices) ? array_keys($colorPrices) : [];
 
         $product->update($validated);
 

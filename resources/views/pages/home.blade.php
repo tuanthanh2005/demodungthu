@@ -124,10 +124,22 @@
                                 </div>
                             @endif
                             
-                            @if($product->colors && count($product->colors) > 0)
+                            @php
+                                $colorDots = [];
+                                $colorPrices = is_array($product->color_prices) ? $product->color_prices : json_decode($product->color_prices ?? '[]', true);
+                                if (!empty($colorPrices)) {
+                                    foreach ($colorPrices as $data) {
+                                        if (!empty($data['hex'])) $colorDots[] = $data['hex'];
+                                    }
+                                }
+                                if (empty($colorDots) && !empty($product->colors)) {
+                                    $colorDots = is_array($product->colors) ? $product->colors : json_decode($product->colors ?? '[]', true);
+                                }
+                            @endphp
+                            @if(!empty($colorDots))
                                 <div class="product-colors">
                                     <small class="text-muted">Màu: </small>
-                                    @foreach($product->colors as $color)
+                                    @foreach($colorDots as $color)
                                         <span class="color-dot-small" style="background: {{ $color }}" title="{{ $color }}"></span>
                                     @endforeach
                                 </div>
