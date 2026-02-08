@@ -147,8 +147,8 @@
                                             <input type="radio" class="btn-check" name="size" id="size-{{ $index }}" autocomplete="off">
                                             <label class="btn btn-outline-secondary" for="size-{{ $index }}">
                                                 {{ $size }}
-                                                @if($sizePrice)
-                                                    <small class="d-block text-muted" style="font-size: 0.75rem;">+{{ number_format($sizePrice - ($product->sale_price > 0 ? $product->sale_price : $product->regular_price), 0, ',', '.') }}đ</small>
+                                                @if($sizePrice && $sizePrice > 0)
+                                                    <small class="d-block text-muted" style="font-size: 0.75rem;">+{{ number_format($sizePrice, 0, ',', '.') }}đ</small>
                                                 @endif
                                             </label>
                                         @endforeach
@@ -286,45 +286,90 @@
     }
 
     // Update price based on selected variant
+    // Update price based on selected variant
+    // Logic: CỘNG DỒN = Giá gốc + Giá phụ thu size + Giá phụ thu màu
     function updatePrice() {
         const priceBox = document.getElementById('priceBox');
         if (!priceBox) return;
 
-        const sizePrices = JSON.parse(priceBox.dataset.sizePrices || '[]');
-        const colorPrices = JSON.parse(priceBox.dataset.colorPrices || '[]');
-        let basePrice = parseFloat(priceBox.dataset.basePrice);
-        const regularPrice = parseFloat(priceBox.dataset.regularPrice);
+        // Helper to convert object/array to standardized array with keys
+        const standardizeData = (jsonStr) => {
+            try {
+                const data = JSON.parse(jsonStr || '[]');
+                if (Array.isArray(data)) return data;
+                if (typeof data === 'object' && data !== null) {
+                    return Object.entries(data).map(([key, val]) => ({...val, name: key, size: key}));
+                }
+                return [];
+            } catch (e) {
+                console.error('Error parsing price data', e);
+                return [];
+            }
+        };
+
+        const sizePrices = standardizeData(priceBox.dataset.sizePrices);
+        const colorPrices = standardizeData(priceBox.dataset.colorPrices);
         
-        // Get selected size
-        const selectedSize = document.querySelector('input[name="size"]:checked');
-        if (selectedSize && sizePrices.length > 0) {
-            const sizeValue = selectedSize.nextElementSibling.textContent.trim();
-            const sizeData = sizePrices.find(s => s.size === sizeValue);
+        // Base price calculation
+        let rawBasePrice = parseFloat(priceBox.dataset.basePrice);
+        
+        let sizeExtra = 0;
+        let colorExtra = 0;
+        
+        // Get selected size extra price
+        const selectedSizeInput = document.querySelector('input[name="size"]:checked');
+        if (selectedSizeInput && sizePrices.length > 0) {
+            const sizeLabel = selectedSizeInput.nextElementSibling;
+            // Get size name from label text (be careful with extra price text)
+            let sizeValue = sizeLabel.textContent.trim();
+            // Remove the price part if exists in text (e.g. "XL\n+50.000đ")
+            if (sizeValue.includes('+')) {
+                sizeValue = sizeValue.split('+')[0].trim();
+            }
+            
+            const sizeData = sizePrices.find(s => {
+                const sSize = (s.size || s.name || '').toString().trim().toLowerCase();
+                return sSize === sizeValue.toLowerCase();
+            });
+            
             if (sizeData && sizeData.price) {
-                basePrice = parseFloat(sizeData.price);
+                sizeExtra = parseFloat(sizeData.price) || 0;
             }
         }
         
-        // Get selected color (can override size price)
-        const selectedColor = document.querySelector('input[name^="color"]:checked');
-        if (selectedColor && colorPrices.length > 0) {
-            const colorHex = selectedColor.nextElementSibling.getAttribute('title');
-            const colorData = colorPrices.find(c => c.hex === colorHex || c.name === colorHex);
-            if (colorData && colorData.price && colorData.price > 0) {
-                basePrice = parseFloat(colorData.price);
+        // Get selected color extra price
+        const selectedColorInput = document.querySelector('input[name^="color-option"]:checked') || document.querySelector('input[name^="color"]:checked');
+        if (selectedColorInput && colorPrices.length > 0) {
+            const colorLabel = selectedColorInput.nextElementSibling;
+            const colorKey = colorLabel.getAttribute('title') || ''; // Hex or Name
+            
+            const colorData = colorPrices.find(c => {
+                const cName = (c.name || '').toString().trim().toLowerCase();
+                const cHex = (c.hex || '').toString().trim().toLowerCase();
+                const search = colorKey.trim().toLowerCase();
+                return cName === search || cHex === search;
+            });
+            
+            if (colorData && colorData.price) {
+                colorExtra = parseFloat(colorData.price) || 0;
             }
         }
+        
+        // Calculate total
+        const finalPrice = rawBasePrice + sizeExtra + colorExtra;
         
         // Update price display
         const currentPriceEl = document.getElementById('currentPrice');
         if (currentPriceEl) {
-            currentPriceEl.textContent = new Intl.NumberFormat('vi-VN').format(basePrice) + 'đ';
+            currentPriceEl.textContent = new Intl.NumberFormat('vi-VN').format(finalPrice) + 'đ';
+            // Store calculated price for cart
+            currentPriceEl.dataset.calculatedPrice = finalPrice;
         }
     }
 
     // Add event listeners to size and color options
     document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('input[name="size"], input[name^="color"]').forEach(input => {
+        document.querySelectorAll('input[name="size"], input[name^="color-option"], input[name^="color"]').forEach(input => {
             input.addEventListener('change', updatePrice);
         });
     });
@@ -375,7 +420,8 @@
                 id: productId,
                 quantity: quantity,
                 size: size,
-                color: color
+                color: color,
+                calculated_price: document.getElementById('currentPrice')?.dataset.calculatedPrice || null
             })
         })
         .then(response => {

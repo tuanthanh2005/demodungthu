@@ -100,36 +100,47 @@ class Product extends Model
 
     /**
      * Get price for specific variant (size + color)
-     * Returns the variant price if exists, otherwise returns base price
+     * Logic: CỘNG DỒN = Giá gốc + Phụ thu size + Phụ thu màu
      */
     public function getPriceForVariant($size = null, $color = null)
     {
-        $basePrice = $this->sale_price > 0 ? $this->sale_price : $this->regular_price;
+        $basePrice = $this->sale_price > 0 ? (float)$this->sale_price : (float)$this->regular_price;
+        $sizeExtra = 0;
+        $colorExtra = 0;
         
-        // Check size price first
-        if ($size && !empty($this->size_prices)) {
-            foreach ($this->size_prices as $sizeData) {
-                if (isset($sizeData['size']) && $sizeData['size'] === $size && isset($sizeData['price'])) {
-                    $basePrice = (float) $sizeData['price'];
+        // Normalize inputs for comparison
+        $normalizedSize = $size ? strtolower(trim($size)) : null;
+        $normalizedColor = $color ? strtolower(trim($color)) : null;
+        
+        // Get size extra price
+        if ($normalizedSize && $normalizedSize !== 'standard' && !empty($this->size_prices)) {
+            foreach ($this->size_prices as $key => $sizeData) {
+                // Handle both array and object formats
+                $sizeValue = isset($sizeData['size']) ? strtolower(trim($sizeData['size'])) : strtolower(trim($key));
+                if ($sizeValue === $normalizedSize && isset($sizeData['price']) && (float)$sizeData['price'] > 0) {
+                    $sizeExtra = (float) $sizeData['price'];
                     break;
                 }
             }
         }
         
-        // Check color price (can override or add to size price)
-        if ($color && !empty($this->color_prices)) {
-            foreach ($this->color_prices as $colorData) {
-                // Match by hex color or name
-                if ((isset($colorData['hex']) && $colorData['hex'] === $color) || 
-                    (isset($colorData['name']) && $colorData['name'] === $color)) {
-                    if (isset($colorData['price']) && $colorData['price'] > 0) {
-                        $basePrice = (float) $colorData['price'];
+        // Get color extra price
+        if ($normalizedColor && $normalizedColor !== 'standard' && !empty($this->color_prices)) {
+            foreach ($this->color_prices as $key => $colorData) {
+                // Match by hex color, name, or key (case-insensitive)
+                $colorHex = isset($colorData['hex']) ? strtolower(trim($colorData['hex'])) : '';
+                $colorName = isset($colorData['name']) ? strtolower(trim($colorData['name'])) : strtolower(trim($key));
+                
+                if (($colorHex === $normalizedColor || $colorName === $normalizedColor)) {
+                    if (isset($colorData['price']) && (float)$colorData['price'] > 0) {
+                        $colorExtra = (float) $colorData['price'];
                     }
                     break;
                 }
             }
         }
         
-        return $basePrice;
+        // CỘNG DỒN: Giá gốc + Phụ thu size + Phụ thu màu
+        return $basePrice + $sizeExtra + $colorExtra;
     }
 }

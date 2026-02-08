@@ -11,9 +11,32 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
         $total = 0;
-        foreach($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
+        
+        // Recalculate prices from database to ensure accuracy
+        foreach($cart as $key => $item) {
+            $product = Product::find($item['product_id']);
+            if ($product) {
+                // Get correct price for this variant
+                $correctPrice = $product->getPriceForVariant(
+                    $item['size'] ?? null, 
+                    $item['color'] ?? null
+                );
+                
+                // Update cart with correct price if different
+                if (abs(($item['price'] ?? 0) - $correctPrice) > 1) {
+                    $cart[$key]['price'] = $correctPrice;
+                }
+                
+                $total += $correctPrice * $item['quantity'];
+            } else {
+                // Product no longer exists, remove from cart
+                unset($cart[$key]);
+            }
         }
+        
+        // Save updated cart to session
+        session()->put('cart', $cart);
+        
         return view('shop.cart', compact('cart', 'total'));
     }
 
@@ -32,21 +55,35 @@ class CartController extends Controller
             $size = $request->input('size', 'Standard');
             $color = $request->input('color', 'Standard');
             $quantity = (int) $request->input('quantity', 1);
+            $frontendPrice = $request->input('calculated_price');
             
-            // Get price for this specific variant
+            // Get price for this specific variant from backend (trusted source)
             $variantPrice = $product->getPriceForVariant($size, $color);
+            
+            // Log price difference if frontend sent a different price (for debugging)
+            if ($frontendPrice !== null && abs((float)$frontendPrice - $variantPrice) > 1) {
+                \Log::warning('Cart price mismatch', [
+                    'product_id' => $id,
+                    'size' => $size,
+                    'color' => $color,
+                    'frontend_price' => $frontendPrice,
+                    'backend_price' => $variantPrice
+                ]);
+            }
             
             // Create a unique key for the item based on ID, size, and color
             $cartKey = $id . '_' . $size . '_' . $color;
 
             if(isset($cart[$cartKey])) {
                 $cart[$cartKey]['quantity'] += $quantity;
+                // Update price in case it changed
+                $cart[$cartKey]['price'] = $variantPrice;
             } else {
                 $cart[$cartKey] = [
                     "product_id" => $product->id,
                     "name" => $product->name,
                     "quantity" => $quantity,
-                    "price" => $variantPrice, // Use variant price instead of base price
+                    "price" => $variantPrice, // Use variant price from backend
                     "image" => $product->image ?? 'https://via.placeholder.com/400',
                     "size" => $size,
                     "color" => $color

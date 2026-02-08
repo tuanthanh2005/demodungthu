@@ -102,20 +102,20 @@
             console.log('prepareColors input:', product); // Debug
             let colors = [];
             
-            // Try color_prices first
-            if (product.color_prices && Array.isArray(product.color_prices)) {
-                console.log('Using color_prices:', product.color_prices); // Debug
-                colors = product.color_prices.map(c => ({
-                    hex: c.hex || '#000',
-                    name: c.name || c.hex || 'Color'
-                }));
-            }
-            // Fallback to colors array
-            else if (product.colors && Array.isArray(product.colors)) {
+            // Try colors array FIRST (simple hex strings)
+            if (product.colors && Array.isArray(product.colors) && product.colors.length > 0) {
                 console.log('Using colors:', product.colors); // Debug
                 colors = product.colors.map(c => ({
                     hex: c,
                     name: c
+                }));
+            }
+            // Fallback to color_prices if colors is empty
+            else if (product.color_prices && Array.isArray(product.color_prices) && product.color_prices.length > 0) {
+                console.log('Using color_prices:', product.color_prices); // Debug
+                colors = product.color_prices.map(c => ({
+                    hex: c.hex || '#000',
+                    name: c.name || c.hex || 'Color'
                 }));
             }
             
@@ -147,17 +147,34 @@
                             console.log('product.colors:', product.colors); // Debug
                             console.log('product.color_prices:', product.color_prices); // Debug
                             
+                            // Helper to ensure data is array and preserve keys as names
+                            const ensureArray = (data, keyAs = 'name') => {
+                                if (Array.isArray(data)) return data;
+                                if (typeof data === 'object' && data !== null) {
+                                    // Convert object to array, preserving keys
+                                    return Object.entries(data).map(([key, value]) => ({
+                                        ...value,
+                                        [keyAs]: key  // Add the key as 'name' or 'size' property
+                                    }));
+                                }
+                                return [];
+                            };
+
                             // Prepare product data for modal
                             const productData = {
                                 id: product.id,
                                 name: product.name,
                                 image: product.image || 'https://via.placeholder.com/400',
                                 price: formatPrice(product.sale_price > 0 ? product.sale_price : product.regular_price),
+                                rawPrice: parseFloat(product.sale_price > 0 ? product.sale_price : product.regular_price), // Add raw price
                                 sizes: product.sizes || [],
                                 colors: prepareColors(product),
-                                sizePrices: product.size_prices || [],
-                                colorPrices: product.color_prices || []
+                                sizePrices: ensureArray(product.size_prices, 'size'),
+                                colorPrices: ensureArray(product.color_prices, 'name')
                             };
+                            
+                            console.log('Prepared sizePrices:', productData.sizePrices); // Debug
+                            console.log('Prepared colorPrices:', productData.colorPrices); // Debug
                             
                             console.log('Prepared productData:', productData); // Debug
                             
