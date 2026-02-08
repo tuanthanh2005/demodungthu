@@ -49,10 +49,35 @@
                         <span class="navx-badge d-none">0</span>
                     @endif
                 </a>
-                <a href="/profile" class="navx-action" aria-label="Tài khoản">
-                    <i class="far fa-user"></i>
-                    <span>Tài khoản</span>
-                </a>
+                @auth
+                    <div class="dropdown">
+                        <a href="#" class="navx-action dropdown-toggle text-decoration-none" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex; flex-direction: column; align-items: center;">
+                             <i class="far fa-user"></i>
+                             <span style="font-size: 0.75rem; margin-top: 4px; max-width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ Auth::user()->name }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{{ url('/profile') }}"><i class="far fa-id-card me-2"></i>Hồ sơ cá nhân</a></li>
+                            @if(Auth::user()->role === 'admin')
+                                <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="fas fa-cog me-2"></i>Trang quản trị</a></li>
+                            @endif
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" class="navx-action" aria-label="Tài khoản">
+                        <i class="far fa-user"></i>
+                        <span>Đăng nhập</span>
+                    </a>
+                @endauth
             </div>
         </div>
     </div>

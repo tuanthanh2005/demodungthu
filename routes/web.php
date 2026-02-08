@@ -17,8 +17,11 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\FlashellController;
 use Illuminate\Support\Facades\Artisan;
+// Admin Product Management
+use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\AdminCategoryController;
 
-// Route trang chá»§ - hiá»ƒn thá»‹ giao diá»‡n e-commerce
+// Route trang chủ
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/shop', [ProductController::class, 'index']);
 Route::get('/categories', [CategoryController::class, 'index']);
@@ -33,11 +36,15 @@ Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 Route::get('/checkout', [CheckoutController::class, 'index']);
+Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
 Route::get('/profile', [ProfileController::class, 'index']);
-Route::get('/login', [AuthController::class, 'login']);
-Route::get('/register', [AuthController::class, 'register']);
-Route::get('/forgot-password', [AuthController::class, 'forgotPassword']);
-Route::get('/logout', [AuthController::class, 'logout']);
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'loginPost']);
+Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register', [AuthController::class, 'registerPost']);
+Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.request');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/logout', [AuthController::class, 'logout']);
 Route::get('/shipping', [ShippingPolicyController::class, 'index']);
 Route::get('/returns', [ReturnPolicyController::class, 'index']);
 Route::get('/faq', [FaqController::class, 'index']);
@@ -47,26 +54,19 @@ Route::get('/flashell', [FlashellController::class, 'index']);
 // API Routes
 Route::get('/api/product/{id}', [App\Http\Controllers\Api\ProductController::class, 'show']);
 
-Route::get('/admin', function () {
-    return view('admin.index');
-});
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function () {
+        return view('admin.index');
+    })->name('dashboard');
 
-Route::post('/admin/clear-cache', function () {
-    abort_unless(app()->environment('local'), 403);
-
-    Artisan::call('view:clear');
-    Artisan::call('cache:clear');
-    Artisan::call('config:clear');
-    Artisan::call('route:clear');
-
-    return back()->with('status', 'ÄÃ£ xÃ³a cache thÃ nh cÃ´ng.');
-});
-
-// Admin Product Management Routes
-use App\Http\Controllers\Admin\AdminProductController;
-use App\Http\Controllers\Admin\AdminCategoryController;
-
-Route::prefix('admin')->name('admin.')->group(function () {
+    Route::post('/clear-cache', function () {
+            Artisan::call('view:clear');
+            Artisan::call('cache:clear');
+            Artisan::call('config:clear');
+            Artisan::call('route:clear');
+            return back()->with('status', 'Đã xóa cache thành công.');
+    });
+    
     Route::resource('products', AdminProductController::class);
     Route::resource('categories', AdminCategoryController::class);
     Route::post('products/{product}/quantity', [AdminProductController::class, 'updateQuantity'])
