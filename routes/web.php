@@ -24,8 +24,14 @@ Route::get('/shop', [ProductController::class, 'index']);
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/about', [PageController::class, 'about']);
 Route::get('/contact', [ContactController::class, 'index']);
-Route::get('/wishlist', [WishlistController::class, 'index']);
-Route::get('/cart', [CartController::class, 'index']);
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
+Route::delete('/wishlist/remove', [WishlistController::class, 'remove'])->name('wishlist.remove');
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 Route::get('/checkout', [CheckoutController::class, 'index']);
 Route::get('/profile', [ProfileController::class, 'index']);
 Route::get('/login', [AuthController::class, 'login']);
@@ -37,6 +43,9 @@ Route::get('/returns', [ReturnPolicyController::class, 'index']);
 Route::get('/faq', [FaqController::class, 'index']);
 Route::get('/product/{id}', [ProductDetailController::class, 'show']);
 Route::get('/flashell', [FlashellController::class, 'index']);
+
+// API Routes
+Route::get('/api/product/{id}', [App\Http\Controllers\Api\ProductController::class, 'show']);
 
 Route::get('/admin', function () {
     return view('admin.index');

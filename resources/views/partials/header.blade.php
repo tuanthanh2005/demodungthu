@@ -19,18 +19,22 @@
             </div>
 
             <ul class="navx-menu">
-                <li><a class="navx-link active" href="/">Trang chủ</a></li>
-                <li><a class="navx-link" href="/shop">Sản phẩm</a></li>
-                <li><a class="navx-link" href="/flashell">Giảm giá</a></li>
-                <li><a class="navx-link" href="/about">Giới thiệu</a></li>
-                <li><a class="navx-link" href="/contact">Liên hệ</a></li>
+                <li><a class="{{ request()->is('/') ? 'navx-link active' : 'navx-link' }}" href="/">Trang chủ</a></li>
+                <li><a class="{{ request()->is('shop*') || request()->is('product*') ? 'navx-link active' : 'navx-link' }}" href="/shop">Sản phẩm</a></li>
+                <li><a class="{{ request()->is('flashell*') ? 'navx-link active' : 'navx-link' }}" href="/flashell">Giảm giá</a></li>
+                <li><a class="{{ request()->is('about*') ? 'navx-link active' : 'navx-link' }}" href="/about">Giới thiệu</a></li>
+                <li><a class="{{ request()->is('contact*') ? 'navx-link active' : 'navx-link' }}" href="/contact">Liên hệ</a></li>
             </ul>
 
             <div class="navx-actions">
                 <a href="/wishlist" class="navx-action" aria-label="Yêu thích">
                     <i class="far fa-heart"></i>
                     <span>Yêu thích</span>
-                    <span class="navx-dot" aria-hidden="true"></span>
+                    @if(session('wishlist') && count(session('wishlist')) > 0)
+                        <span class="navx-badge navx-badge-wishlist">{{ count(session('wishlist')) }}</span>
+                    @else
+                        <span class="navx-badge navx-badge-wishlist d-none">0</span>
+                    @endif
                 </a>
                 <a href="/cart" class="navx-action" aria-label="Giỏ hàng">
                     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -39,7 +43,11 @@
                         <circle cx="17" cy="20" r="1.5" />
                     </svg>
                     <span>Giỏ hàng</span>
-                    <span class="navx-badge">3</span>
+                    @if(session('cart') && count(session('cart')) > 0)
+                        <span class="navx-badge">{{ count(session('cart')) }}</span>
+                    @else
+                        <span class="navx-badge d-none">0</span>
+                    @endif
                 </a>
                 <a href="/profile" class="navx-action" aria-label="Tài khoản">
                     <i class="far fa-user"></i>

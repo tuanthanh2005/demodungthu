@@ -70,67 +70,7 @@
                         <div class="row g-4">
                             @foreach($products as $product)
                             <div class="col-lg-4 col-md-6 col-6">
-                                <div class="product-card h-100 {{ $product->quantity <= 0 ? 'out-of-stock' : '' }}">
-                                    <div class="product-image position-relative overflow-hidden rounded-3">
-                                        <a href="/product/{{ $product->id }}">
-                                            <img src="{{ $product->image ?? 'https://via.placeholder.com/400' }}" 
-                                                 alt="{{ $product->name }}" 
-                                                 class="w-100 h-100 object-fit-cover"
-                                                 style="aspect-ratio: 1/1;">
-                                        </a>
-                                        
-                                        <!-- Badges -->
-                                        <div class="position-absolute top-0 start-0 p-2 d-flex flex-column gap-1">
-                                            @if($product->quantity <= 0)
-                                                <span class="badge bg-secondary">Hết hàng</span>
-                                            @elseif($product->created_at->diffInDays(now()) < 7)
-                                                <span class="badge bg-primary">Mới</span>
-                                            @endif
-                                            @if($product->sale_price && $product->sale_price < $product->regular_price)
-                                                <span class="badge bg-danger">-{{ round((($product->regular_price - $product->sale_price) / $product->regular_price) * 100) }}%</span>
-                                            @endif
-                                        </div>
-
-                                        <!-- Actions -->
-                                        <div class="product-actions-overlay position-absolute bottom-0 start-0 w-100 p-2 d-flex justify-content-center gap-2" 
-                                             style="background: rgba(255,255,255,0.9); transform: translateY(100%); transition: transform 0.3s;">
-                                            <button class="btn btn-sm btn-primary rounded-circle btn-grid-add-cart d-flex align-items-center justify-content-center" 
-                                                    style="width: 38px; height: 38px; padding: 0;"
-                                                    {{ $product->quantity <= 0 ? 'disabled' : '' }}
-                                                    data-product-id="{{ $product->id }}"
-                                                    title="Thêm vào giỏ">
-                                                <i class="fas fa-shopping-cart"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger rounded-circle btn-wishlist d-flex align-items-center justify-content-center" 
-                                                    style="width: 38px; height: 38px; padding: 0;"
-                                                    title="Yêu thích">
-                                                <i class="far fa-heart"></i>
-                                            </button>
-                                            <a href="/product/{{ $product->id }}" 
-                                               class="btn btn-sm btn-outline-dark rounded-circle d-flex align-items-center justify-content-center" 
-                                               style="width: 38px; height: 38px; padding: 0;"
-                                               title="Xem chi tiết">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="product-info mt-3">
-                                        <div class="small text-muted mb-1">{{ $product->category->name ?? 'Uncategorized' }}</div>
-                                        <h3 class="h6 fw-bold mb-1 text-truncate">
-                                            <a href="/product/{{ $product->id }}" class="text-decoration-none text-dark">{{ $product->name }}</a>
-                                        </h3>
-                                        
-                                        <div class="d-flex align-items-center gap-2">
-                                            @if($product->sale_price && $product->sale_price > 0 && $product->sale_price < $product->regular_price)
-                                                <span class="fw-bold text-danger">{{ number_format($product->sale_price, 0, ',', '.') }}đ</span>
-                                                <span class="small text-muted text-decoration-line-through">{{ number_format($product->regular_price, 0, ',', '.') }}đ</span>
-                                            @else
-                                                <span class="fw-bold">{{ number_format($product->regular_price, 0, ',', '.') }}đ</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('partials.product-card', ['product' => $product])
                             </div>
                             @endforeach
                         </div>
@@ -172,22 +112,6 @@
 @push('scripts')
     <script>
         // Add to cart
-        document.querySelectorAll('.btn-grid-add-cart').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const icon = this.querySelector('i');
-                const originalClass = icon.className;
-                
-                // Simple animation
-                icon.className = 'fas fa-check';
-                this.classList.remove('btn-primary');
-                this.classList.add('btn-success');
-                
-                setTimeout(() => {
-                    icon.className = originalClass;
-                    this.classList.add('btn-primary');
-                    this.classList.remove('btn-success');
-                }, 1500);
-            });
-        });
+
     </script>
 @endpush

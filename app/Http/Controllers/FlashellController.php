@@ -8,7 +8,8 @@ class FlashellController
 {
     public function index()
     {
-        return view('shop.flashell');
+        $products = \App\Models\Product::inRandomOrder()->limit(12)->get();
+        return view('shop.flashell', compact('products'));
     }
 }
 

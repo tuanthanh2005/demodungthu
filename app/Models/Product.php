@@ -97,4 +97,39 @@ class Product extends Model
               ->orWhere('quantity', '<=', 0);
         });
     }
+
+    /**
+     * Get price for specific variant (size + color)
+     * Returns the variant price if exists, otherwise returns base price
+     */
+    public function getPriceForVariant($size = null, $color = null)
+    {
+        $basePrice = $this->sale_price > 0 ? $this->sale_price : $this->regular_price;
+        
+        // Check size price first
+        if ($size && !empty($this->size_prices)) {
+            foreach ($this->size_prices as $sizeData) {
+                if (isset($sizeData['size']) && $sizeData['size'] === $size && isset($sizeData['price'])) {
+                    $basePrice = (float) $sizeData['price'];
+                    break;
+                }
+            }
+        }
+        
+        // Check color price (can override or add to size price)
+        if ($color && !empty($this->color_prices)) {
+            foreach ($this->color_prices as $colorData) {
+                // Match by hex color or name
+                if ((isset($colorData['hex']) && $colorData['hex'] === $color) || 
+                    (isset($colorData['name']) && $colorData['name'] === $color)) {
+                    if (isset($colorData['price']) && $colorData['price'] > 0) {
+                        $basePrice = (float) $colorData['price'];
+                    }
+                    break;
+                }
+            }
+        }
+        
+        return $basePrice;
+    }
 }
