@@ -1,6 +1,6 @@
 ﻿@extends('layouts.app')
 
-@section('title', 'Chi tiết sản phẩm')
+@section('title', $product->name)
 @section('meta_description', 'Thông tin chi tiết sản phẩm.')
 
 @section('content')
@@ -11,9 +11,16 @@
                     <div class="ratio ratio-1x1 bg-light"></div>
                 </div>
                 <div class="col-lg-6">
-                    <h1 class="mb-2">Sản phẩm #{{ $id }}</h1>
-                    <div class="h4 text-primary">349.000đ</div>
-                    <p class="text-muted">Mô tả ngắn về sản phẩm, chất liệu và kiểu dáng.</p>
+                    <h1 class="mb-2">{{ $product->name }}</h1>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        @if($product->sale_price && $product->sale_price > 0 && $product->sale_price < $product->regular_price)
+                            <span class="price-current">{{ number_format($product->sale_price, 0, ',', '.') }}đ</span>
+                            <span class="price-old">{{ number_format($product->regular_price, 0, ',', '.') }}đ</span>
+                        @else
+                            <span class="price-current">{{ number_format($product->regular_price, 0, ',', '.') }}đ</span>
+                        @endif
+                    </div>
+                    <p class="text-muted">{{ $product->description }}</p>
 
                     <div class="mb-3">
                         <label class="form-label">Kích cỡ</label>
